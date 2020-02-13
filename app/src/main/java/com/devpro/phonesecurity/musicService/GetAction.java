@@ -6,10 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.devpro.phonesecurity.R;
 
 import java.io.Serializable;
 import java.security.Permission;
@@ -20,6 +24,18 @@ public class GetAction{
         AudioManager audioManager= (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         int volumMax=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,volumMax,0);
+    }
+    public static void playMusicUri(Context context, Uri uri){
+        MediaPlayer player= MediaPlayer.create(context,uri);
+        player.start();
+    }
+    public static void playMusicDefault(Context context){
+        MediaPlayer player= MediaPlayer.create(context,R.raw.musicdefault);
+        player.start();
+    }
+    public static void stopMusicDefault(Context context){
+        MediaPlayer player=MediaPlayer.create(context,R.raw.musicdefault);
+        player.stop();
     }
     public static boolean CheckPermission(Context context,String permission){
         if(ContextCompat.checkSelfPermission(context,permission)== PackageManager.PERMISSION_GRANTED){
