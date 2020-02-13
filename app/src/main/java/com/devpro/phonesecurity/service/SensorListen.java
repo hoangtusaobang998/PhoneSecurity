@@ -1,15 +1,25 @@
 package com.devpro.phonesecurity.service;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
+import com.devpro.phonesecurity.R;
+import com.devpro.phonesecurity.musicService.GetAction;
 
 public class SensorListen extends Service implements SensorEventListener {
 
@@ -42,11 +52,25 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Start", Toast.LENGTH_SHORT).show();
-        sensorMan.registerListener(this, accelerometer,
-                SensorManager.SENSOR_DELAY_UI);
-        mSensorManager.registerListener(this, mSensor,
-                SensorManager.SENSOR_DELAY_NORMAL);
+        final String CHANNEL_ID = "sersorListen_id";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel test = new NotificationChannel(CHANNEL_ID, "sersorListen_id", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manage = getSystemService(NotificationManager.class);
+            assert manage != null;
+            manage.createNotificationChannel(test);
+            Notification.Builder notify = new Notification.Builder(this, CHANNEL_ID);
+            notify.setContentTitle("Messenger")
+                    .setContentText("Running")
+                    .setSmallIcon(R.drawable.ic_notifications);
+            startForeground(1, notify.build());
+            Toast.makeText(this, "Start", Toast.LENGTH_SHORT).show();
+            sensorMan.registerListener(this, accelerometer,
+                    SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(this, mSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+
         return START_STICKY;
     }
 
@@ -64,7 +88,7 @@ public class SensorListen extends Service implements SensorEventListener {
             mAccel = mAccel * 0.9f + delta;
             // Make this higher or lower according to how much
             // motion you want to detect
-            if (mAccel > 0.5) {
+            if (mAccel > 1) {
                 Toast.makeText(SensorListen.this, "Sensor Run Hua Bc", Toast.LENGTH_SHORT).show();
                 //MediaPlayer mPlayer = MediaPlayer.create(MainActivity.this, R.raw.siren);
                 //mPlayer.start();
@@ -88,6 +112,9 @@ public class SensorListen extends Service implements SensorEventListener {
                 }
             }
         }
+        else{
+
+        }
     }
 
     @Override
@@ -97,8 +124,10 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public void onDestroy() {
+        Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+        sensorMan.unregisterListener(this);
+        mSensorManager.unregisterListener(this);
         super.onDestroy();
-//        sensorMan.unregisterListener(this);
-//        mSensorManager.unregisterListener(this);
+        
     }
 }

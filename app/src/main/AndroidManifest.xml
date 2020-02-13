@@ -15,8 +15,7 @@
         <activity
             android:name=".view.splashscreen.SplashActivity"
             android:theme="@style/AppThemesss"
-            android:noHistory="true"
-            >
+            android:noHistory="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,8 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.HomeActivity"></activity>
-        <service android:name=".musicService.MusicService" android:enabled="true">
-
-        </service>
+        <service android:name=".service.SensorListen" android:enabled="true"/>
+        <receiver android:name=".receiver.ReceiverBackground"/>
+        <receiver android:name=".receiver.ReceiverPower"/>
     </application>
 </manifest>
