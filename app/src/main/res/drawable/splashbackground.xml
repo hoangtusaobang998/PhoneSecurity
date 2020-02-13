@@ -11,7 +11,7 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_warning_black_24dp"
+        android:drawable="@drawable/ic_steal"
         android:gravity="center"/>
 
 
