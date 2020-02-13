@@ -96,7 +96,7 @@ public class SensorListen extends Service implements SensorEventListener {
         } else if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
                 if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
-                    //near
+                    GetAction.playMusicDefault(this);
                     Toast.makeText(getApplicationContext(), "Gần", Toast.LENGTH_SHORT).show();
                 } else if (pSwitchSet == 1) {
                     GetAction.playMusicDefault(this);
