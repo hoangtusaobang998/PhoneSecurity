@@ -16,21 +16,28 @@
         <activity
             android:name=".view.pinlock.PinLockActivity"
             android:theme="@style/AppThemesss">
+        </activity>
+        <activity
+            android:name=".view.splashscreen.SplashActivity"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
+            android:theme="@style/AppThemesss">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.splashscreen.SplashActivity"
-            android:noHistory="true"
-            android:theme="@style/AppThemesss">
-
-        </activity>
-        <activity android:name=".view.HomeActivity" />
+        <activity android:name=".view.HomeActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".service.SensorListen" />
+        <receiver android:name=".receiver.ReceiverPower">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 
