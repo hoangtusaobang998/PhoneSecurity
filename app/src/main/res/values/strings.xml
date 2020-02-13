@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PhoneSecurity</string>
+    <string name="deletex">Space</string>
+    <string name="pass">Password consists of 6 numbers</string>
 </resources>
