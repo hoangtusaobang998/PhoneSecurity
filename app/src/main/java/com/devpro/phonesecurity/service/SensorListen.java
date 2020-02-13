@@ -63,7 +63,6 @@ public class SensorListen extends Service implements SensorEventListener {
                     .setContentText("Running")
                     .setSmallIcon(R.drawable.ic_notifications);
             startForeground(1, notify.build());
-            Toast.makeText(this, "Start", Toast.LENGTH_SHORT).show();
             sensorMan.registerListener(this, accelerometer,
                     SensorManager.SENSOR_DELAY_UI);
             mSensorManager.registerListener(this, mSensor,
@@ -88,14 +87,10 @@ public class SensorListen extends Service implements SensorEventListener {
             mAccel = mAccel * 0.9f + delta;
             // Make this higher or lower according to how much
             // motion you want to detect
-            if (mAccel > 1) {
+            if (mAccel > 10) {
                 Toast.makeText(SensorListen.this, "Sensor Run Hua Bc", Toast.LENGTH_SHORT).show();
-                //MediaPlayer mPlayer = MediaPlayer.create(MainActivity.this, R.raw.siren);
-                //mPlayer.start();
-                if (mSwitchSet == 1) {
-
-
-                }
+                GetAction.setVolum(this);
+                GetAction.playMusicDefault(this);
 
             }
         } else if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
@@ -104,16 +99,14 @@ public class SensorListen extends Service implements SensorEventListener {
                     //near
                     Toast.makeText(getApplicationContext(), "Gần", Toast.LENGTH_SHORT).show();
                 } else if (pSwitchSet == 1) {
-                    //startActivity(new Intent(MainActivity.this, EnterPin.class));
-                    // finish();
-                    //far
+                    GetAction.playMusicDefault(this);
                     Toast.makeText(getApplicationContext(), "Xa", Toast.LENGTH_SHORT).show();
 
                 }
             }
         }
         else{
-
+            onDestroy();
         }
     }
 
@@ -124,7 +117,7 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+        Log.d("rr","as");
         sensorMan.unregisterListener(this);
         mSensorManager.unregisterListener(this);
         super.onDestroy();

@@ -19,14 +19,12 @@ import java.net.Inet4Address;
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView startImg , bellImg , chargeImg , pinImg , settingImg;
     private int i=0;
-    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_home);
         mapping();
-        intent=new Intent(HomeActivity.this,SensorListen.class);
         startImg.setImageResource(R.drawable.ic_power_off);
         startImg.setOnClickListener(this);
     }
@@ -44,6 +42,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.start:
                 if(i==0){
                     i=1;
+                    Intent intent=new Intent(HomeActivity.this,SensorListen.class);
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
                         startForegroundService(intent);
                     }
@@ -54,7 +53,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 else if(i==1){
                     i=0;
-
+                    Intent intent=new Intent(HomeActivity.this,SensorListen.class);
+                    stopService(intent);
                     startImg.setImageResource(R.drawable.ic_power_off);
                 }
                 break;
