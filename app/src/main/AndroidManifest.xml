@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.devpro.phonesecurity">
-
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -14,24 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.pinlock.PinLockActivity"
-            android:theme="@style/AppThemesss">
+            android:name=".view.splashscreen.SplashActivity"
+            android:theme="@style/AppThemesss"
+            android:noHistory="true"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.splashscreen.SplashActivity"
-            android:noHistory="true"
-            android:theme="@style/AppThemesss">
+        <activity android:name=".view.HomeActivity"></activity>
+        <service android:name=".musicService.MusicService" android:enabled="true">
 
-        </activity>
-        <activity android:name=".view.HomeActivity" />
-
-        <service android:name=".service.SensorListen" />
-
+        </service>
     </application>
-
 </manifest>
