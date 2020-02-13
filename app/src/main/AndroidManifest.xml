@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:screenOrientation="portrait"
             android:name=".view.splashscreen.SplashActivity"
             android:theme="@style/AppThemesss"
             android:noHistory="true">
@@ -23,7 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.HomeActivity"></activity>
+        <activity android:name=".view.HomeActivity"
+            android:screenOrientation="portrait"></activity>
         <service android:name=".service.SensorListen" android:enabled="true"/>
         <receiver android:name=".receiver.ReceiverBackground"/>
         <receiver android:name=".receiver.ReceiverPower"/>

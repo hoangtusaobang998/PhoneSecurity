@@ -85,7 +85,7 @@ public class SensorListen extends Service implements SensorEventListener {
             mAccelCurrent = (float) Math.sqrt(x * x + y * y + z * z);
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta;
-            // Make this higher or lower according to how much
+
             // motion you want to detect
             if (mAccel > 10) {
                 Toast.makeText(SensorListen.this, "Sensor Run Hua Bc", Toast.LENGTH_SHORT).show();
