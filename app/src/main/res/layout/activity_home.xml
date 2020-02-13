@@ -55,7 +55,7 @@
                 android:text="Set \n sound"
                 android:textColor="#000000"
                 android:layout_below="@id/bell"
-                android:layout_marginLeft="70dp"/>
+                android:layout_marginLeft="80dp"/>
             <ImageView
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
