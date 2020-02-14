@@ -13,8 +13,10 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -31,6 +33,8 @@ public class GetAction{
     public static final int requestCode_mp3=123;
     public static final int requestCode_Permission=100;
     public static final String URI_MP3="URI_MP3";
+    public static final int show_Music=1;
+    public static final int show_Permission=2;
 
 
 
@@ -86,25 +90,41 @@ public class GetAction{
         return false;
     }
 
-    public static void showDialogBell(final Context context){
-        Dialog buider=new Dialog(context);
-        buider.setContentView(R.layout.dialog_music);
-        Button btn_MusicDefault=(Button) buider.findViewById(R.id.btn_musicdefault);
-        Button btn_MusicPhone=(Button) buider.findViewById(R.id.btn_musiclocal);
+    public static void showDialogBell(final Context context, int layout, int btn_id1, int btn_id2, final int event){
+        final Dialog buider=new Dialog(context);
+        buider.setContentView(layout);
+        Button btn_MusicDefault=(Button) buider.findViewById(btn_id1);
+        Button btn_MusicPhone=(Button) buider.findViewById(btn_id2);
         btn_MusicDefault.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConstansPin.putString(context,GetAction.URI_MP3,ConstansPin.NULLPOIN);
+                if(event==GetAction.show_Music){
+                    ConstansPin.putString(context,GetAction.URI_MP3,ConstansPin.NULLPOIN);
+                    buider.dismiss();
+                }
+                else if(event==GetAction.show_Permission){
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                    intent.setData(uri);
+                    Activity activity=(Activity) context;
+                    activity.startActivityForResult(intent, GetAction.requestCode_Permission);
+                    buider.dismiss();
+                }
             }
         });
         btn_MusicPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GetAction.pickAudio(context, GetAction.requestCode_mp3);
+                if(event==GetAction.show_Music){
+                    GetAction.pickAudio(context, GetAction.requestCode_mp3);
+                    buider.dismiss();
+                }
+                else if(event==GetAction.show_Permission){
+                    buider.dismiss();
+                }
             }
         });
         buider.getWindow().setBackgroundDrawable(null);
-
         buider.show();
     }
 

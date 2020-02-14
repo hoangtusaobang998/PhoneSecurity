@@ -19,12 +19,14 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.devpro.phonesecurity.R;
@@ -39,7 +41,8 @@ import com.devpro.phonesecurity.musicService.ConstansPin;
 import java.net.Inet4Address;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageView startImg, bellImg, chargeImg, pinImg, settingImg;
+    ImageView startImg,chargeImg;
+    LinearLayout  bellLl,chargeLl , pinLl, settingLl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,18 +51,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mapping();
         startImg.setImageResource(R.drawable.ic_power_off);
         startImg.setOnClickListener(this);
-        bellImg.setOnClickListener(this);
-        chargeImg.setOnClickListener(this);
-        pinImg.setOnClickListener(this);
-        settingImg.setOnClickListener(this);
+        bellLl.setOnClickListener(this);
+        chargeLl.setOnClickListener(this);
+        pinLl.setOnClickListener(this);
+        settingLl.setOnClickListener(this);
     }
 
     private void mapping() {
         startImg = findViewById(R.id.start);
-        bellImg = findViewById(R.id.bell);
+        bellLl = findViewById(R.id.ll_bell);
         chargeImg = findViewById(R.id.charge);
-        pinImg = findViewById(R.id.pin);
-        settingImg = findViewById(R.id.setting);
+        chargeLl=findViewById(R.id.ll_charge);
+        pinLl = findViewById(R.id.ll_pin);
+        settingLl = findViewById(R.id.ll_setting);
     }
 
     @Override
@@ -81,14 +85,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 break;
-            case R.id.bell:
+            case R.id.ll_bell:
                 if (GetAction.CheckPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    GetAction.showDialogBell(this);
+                    GetAction.showDialogBell(this,R.layout.dialog_music,R.id.btn_musicdefault,R.id.btn_musiclocal,GetAction.show_Music);
 
                 } else
                     GetAction.setPermision(this, Manifest.permission.READ_EXTERNAL_STORAGE, GetAction.requestCode_Permission);
                 break;
-            case R.id.charge:
+            case R.id.ll_charge:
                 if (!ReceiverPower.isRegisted) {
                     chargeImg.setImageResource(R.drawable.ic_charger_on);
                    ReceiverPower.sendBroadcast(this);
@@ -99,10 +103,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //                code....
 
                 break;
-            case R.id.pin:
+            case R.id.ll_pin:
 //                code...
                 break;
-            case R.id.setting:
+            case R.id.ll_setting:
 //                code...
                 break;
         }
@@ -122,7 +126,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode==GetAction.requestCode_Permission){
             if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                GetAction.showDialogBell(this);
+                GetAction.showDialogBell(this,R.layout.dialog_music,R.id.btn_musicdefault,R.id.btn_musiclocal,GetAction.show_Music);
+            }
+            else if(grantResults[0]==PackageManager.PERMISSION_DENIED){
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    boolean showRationale = shouldShowRequestPermissionRationale(String.valueOf(grantResults[0]));
+                    if(!showRationale){
+                        GetAction.showDialogBell(this,R.layout.dialog_detail,R.id.btn_setting,R.id.btn_done,GetAction.show_Permission);
+                    }
+
+                }
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -2,4 +2,5 @@
     <string name="app_name">PhoneSecurity</string>
     <string name="deletex">Space</string>
     <string name="pass">Password consists of 6 numbers</string>
+    <string name="detail_permission">If you want to use a favorite song in your device as an alarm ringtone. Then you need to authorize the application to be able to set the alarm music!</string>
 </resources>
