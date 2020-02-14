@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.receiver.ReceiverBackground;
 import com.devpro.phonesecurity.service.SensorListen;
+import com.devpro.phonesecurity.view.pinlock.ConstansPin;
 
 import java.net.Inet4Address;
 
@@ -69,6 +71,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         startService(intent);
                     }
                 }
+
                 break;
             case R.id.bell:
                 if(GetAction.CheckPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
@@ -84,20 +87,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode==GetAction.requestCode_mp3 && resultCode==RESULT_OK && data!=null){
             Uri uri=data.getData();
-            GetAction.uri_String=uri.toString();
+            ConstansPin.putString(this,GetAction.URI_MP3,uri.toString());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
 }

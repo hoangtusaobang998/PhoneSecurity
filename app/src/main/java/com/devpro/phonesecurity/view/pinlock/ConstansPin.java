@@ -15,6 +15,10 @@ public class ConstansPin {
         return createSharedPreferences(context).getString(key, NULLPOIN);
     }
 
+    public static void putString(Context context, String key,String path) {
+        createSharedPreferences(context).edit().putString(key,path).apply();
+    }
+
     private static final SharedPreferences createSharedPreferences(Context context) {
         return context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
     }

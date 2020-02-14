@@ -22,9 +22,10 @@ import java.security.Permission;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class GetAction{
-    public static String uri_String="";
     public static final int requestCode_mp3=123;
     public static final int requestCode_Permisstion=100;
+    public static final String URI_MP3="URI_MP3";
+
 
 
 
@@ -40,20 +41,7 @@ public class GetAction{
         assert audioManager != null;
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,0,0);
     }
-    public static MediaPlayer playMusicUri(Context context, Uri uri){
-        MediaPlayer player= MediaPlayer.create(context,uri);
-        player.start();
-        return player;
-    }
-    public static MediaPlayer playMusicDefault(Context context){
-        MediaPlayer player= MediaPlayer.create(context,R.raw.musicdefault);
-        player.start();
-        return player;
-    }
-    public static void stopMusicDefault(Context context){
-        MediaPlayer player=MediaPlayer.create(context,R.raw.musicdefault);
-        player.stop();
-    }
+
     public static boolean CheckPermission(Context context,String permission){
         if(ContextCompat.checkSelfPermission(context,permission)== PackageManager.PERMISSION_GRANTED){
             return true;
@@ -89,8 +77,5 @@ public class GetAction{
         return false;
     }
 
-    public static void startService(Context context){
-
-    }
 
 }
