@@ -27,13 +27,13 @@ public class PlayerServicePower extends Service {
 
     @Override
     public void onDestroy() {
-        isPlaying();
+        checkPlaying();
         super.onDestroy();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        isPlaying();
+        checkPlaying();
         return START_NOT_STICKY;
     }
 
@@ -42,7 +42,7 @@ public class PlayerServicePower extends Service {
         super.onTaskRemoved(rootIntent);
     }
 
-    private void isPlaying() {
+    private void checkPlaying() {
         if (mediaPlayer == null) {
             return;
         }
