@@ -18,10 +18,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
+import com.devpro.phonesecurity.BuildConfig;
 import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.view.pinlock.ConstansPin;
+
+import java.io.File;
 
 public class SensorListen extends Service implements SensorEventListener {
 
@@ -54,13 +58,16 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        uri_Path=ConstansPin.getString(this,GetAction.URI_MP3);
-        if(uri_Path==ConstansPin.NULLPOIN){
+        uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);
+        if (uri_Path == ConstansPin.NULLPOIN) {
 
-            player=MediaPlayer.create(this,R.raw.musicdefault);
-        }
-        else{
-            player=MediaPlayer.create(this,Uri.parse(uri_Path));
+            player = MediaPlayer.create(this, R.raw.musicdefault);
+        } else {
+            Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", new File(uri_Path));
+            player = MediaPlayer.create(this, uri);
+            if (player != null) {
+                player.start();
+            }
             Toast.makeText(this, uri_Path, Toast.LENGTH_SHORT).show();
         }
         final String CHANNEL_ID = "sersorListen_id";
@@ -79,8 +86,7 @@ public class SensorListen extends Service implements SensorEventListener {
             mSensorManager.registerListener(this, mSensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
 
-        }
-        else{
+        } else {
             sensorMan.registerListener(this, accelerometer,
                     SensorManager.SENSOR_DELAY_UI);
             mSensorManager.registerListener(this, mSensor,
@@ -92,7 +98,7 @@ public class SensorListen extends Service implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            if(event.values[0]>1.0f || event.values[1]>1.0f){
+            if (event.values[0] > 1.0f || event.values[1] > 1.0f) {
                 GetAction.setVolum(this);
 //                player.start();
             }
@@ -113,8 +119,6 @@ public class SensorListen extends Service implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
-
 
     @Override
     public void onDestroy() {
