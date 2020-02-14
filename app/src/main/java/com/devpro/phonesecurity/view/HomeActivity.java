@@ -1,5 +1,6 @@
 package com.devpro.phonesecurity.view;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -81,24 +83,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bell:
                 if (GetAction.CheckPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    AlertDialog.Builder builder=new AlertDialog.Builder(this);
-                    builder.setTitle("Choose music");
-                    builder.setPositiveButton("Music local", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            GetAction.pickAudio(HomeActivity.this, GetAction.requestCode_mp3);
-                        }
-                    });
-                    builder.setNegativeButton("Music default", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ConstansPin.putString(HomeActivity.this,GetAction.URI_MP3,ConstansPin.NULLPOIN);
-                        }
-                    });
-                    builder.show();
-
+                    GetAction.showDialogBell(this);
                 } else
-                    GetAction.setPermision(this, Manifest.permission.READ_EXTERNAL_STORAGE, GetAction.requestCode_Permisstion);
+                    GetAction.setPermision(this, Manifest.permission.READ_EXTERNAL_STORAGE, GetAction.requestCode_Permission);
                 break;
             case R.id.charge:
 //                code....
@@ -118,8 +105,26 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Uri uri = data.getData();
             Log.e("URL", uri.toString());
             ConstansPin.putString(this, GetAction.URI_MP3, FileUtils.getPath(this, uri));
+            Intent intent = new Intent(HomeActivity.this, SensorListen.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            } else {
+                startService(intent);
+            }
+
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode==GetAction.requestCode_Permission){
+            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                GetAction.showDialogBell(this);
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

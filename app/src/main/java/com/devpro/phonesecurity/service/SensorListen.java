@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -96,19 +97,17 @@ public class SensorListen extends Service implements SensorEventListener {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             if (event.values[0] > 1.0f || event.values[1] > 1.0f) {
                 GetAction.setVolum(this);
-                if (player != null)
-                    player.start();
+                playMusic();
+
             }
         } else if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
                 if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
                     GetAction.setVolum(this);
-                    if (player != null)
-                        player.start();
+                    playMusic();
                 } else if (pSwitchSet == 1) {
                     GetAction.setVolum(this);
-                    if (player != null)
-                        player.start();
+                    playMusic();
                 }
             }
         }
@@ -117,6 +116,13 @@ public class SensorListen extends Service implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    public void playMusic(){
+        if (player != null){
+            player.setAudioStreamType(AudioManager.MODE_IN_COMMUNICATION);
+            player.start();
+        }
     }
 
     @Override
