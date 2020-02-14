@@ -29,6 +29,8 @@ import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.musicService.FileUtils;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.receiver.ReceiverBackground;
+import com.devpro.phonesecurity.receiver.ReceiverPower;
+import com.devpro.phonesecurity.service.PlayerServicePower;
 import com.devpro.phonesecurity.service.SensorListen;
 import com.devpro.phonesecurity.view.pinlock.ConstansPin;
 
@@ -36,8 +38,6 @@ import java.net.Inet4Address;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView startImg, bellImg, chargeImg, pinImg, settingImg;
-    private int i = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +101,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     GetAction.setPermision(this, Manifest.permission.READ_EXTERNAL_STORAGE, GetAction.requestCode_Permisstion);
                 break;
             case R.id.charge:
+                if (!ReceiverPower.isRegisted) {
+                    chargeImg.setImageResource(R.drawable.ic_charger_on);
+                   ReceiverPower.sendBroadcast(this);
+                }else {
+                    chargeImg.setImageResource(R.drawable.ic_charger_off);
+                    ReceiverPower.stopBroadcast(this);
+                }
 //                code....
+
                 break;
             case R.id.pin:
 //                code...
