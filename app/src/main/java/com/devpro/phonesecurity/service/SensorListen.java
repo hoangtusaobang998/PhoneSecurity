@@ -120,6 +120,14 @@ public class SensorListen extends Service implements SensorEventListener {
             if (!player.isPlaying()) {
                 player.setAudioStreamType(AudioManager.MODE_IN_COMMUNICATION);
                 player.start();
+                mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+                mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+                sensorMan = (SensorManager) getSystemService(SENSOR_SERVICE);
+                accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            }
+            else if(player.isPlaying()){
+                sensorMan.unregisterListener(this);
+                mSensorManager.unregisterListener(this);
             }
         }
     }
