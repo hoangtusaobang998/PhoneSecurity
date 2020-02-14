@@ -21,7 +21,6 @@ import androidx.core.content.ContextCompat;
 
 import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.view.HomeActivity;
-import com.devpro.phonesecurity.view.pinlock.ConstansPin;
 
 import java.io.Serializable;
 import java.security.Permission;
