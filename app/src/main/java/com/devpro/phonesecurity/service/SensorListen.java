@@ -58,17 +58,13 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);
         if (uri_Path == ConstansPin.NULLPOIN) {
-
             player = MediaPlayer.create(this, R.raw.musicdefault);
         } else {
             Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", new File(uri_Path));
             player = MediaPlayer.create(this, uri);
-            if (player != null) {
-                player.start();
-            }
-            Toast.makeText(this, uri_Path, Toast.LENGTH_SHORT).show();
         }
         final String CHANNEL_ID = "sersorListen_id";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -100,16 +96,19 @@ public class SensorListen extends Service implements SensorEventListener {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             if (event.values[0] > 1.0f || event.values[1] > 1.0f) {
                 GetAction.setVolum(this);
-//                player.start();
+                if (player != null)
+                    player.start();
             }
         } else if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
                 if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
                     GetAction.setVolum(this);
-//                    player.start();
+                    if (player != null)
+                        player.start();
                 } else if (pSwitchSet == 1) {
                     GetAction.setVolum(this);
-//                    player.start();
+                    if (player != null)
+                        player.start();
                 }
             }
         }
@@ -124,7 +123,8 @@ public class SensorListen extends Service implements SensorEventListener {
     public void onDestroy() {
         sensorMan.unregisterListener(this);
         mSensorManager.unregisterListener(this);
-//        player.stop();
+        if (player != null)
+            player.stop();
         super.onDestroy();
     }
 

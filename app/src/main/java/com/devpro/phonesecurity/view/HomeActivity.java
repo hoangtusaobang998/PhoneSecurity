@@ -93,4 +93,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(GetAction.checkServiceRunning(SensorListen.class,this)){
+            GetAction.setVolum(this);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
