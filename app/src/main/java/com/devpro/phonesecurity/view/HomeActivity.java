@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.devpro.phonesecurity.R;
+import com.devpro.phonesecurity.musicService.FileUtils;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.receiver.ReceiverBackground;
 import com.devpro.phonesecurity.service.SensorListen;
@@ -32,8 +33,9 @@ import com.devpro.phonesecurity.view.pinlock.ConstansPin;
 import java.net.Inet4Address;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageView startImg , bellImg , chargeImg , pinImg , settingImg;
-    private int i=0;
+    ImageView startImg, bellImg, chargeImg, pinImg, settingImg;
+    private int i = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         startImg.setOnClickListener(this);
         bellImg.setOnClickListener(this);
     }
-    private void mapping(){
+
+    private void mapping() {
         startImg = findViewById(R.id.start);
         bellImg = findViewById(R.id.bell);
         chargeImg = findViewById(R.id.charge);
@@ -54,40 +57,38 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.start:
-                if(GetAction.checkServiceRunning(SensorListen.class,this)){
+                if (GetAction.checkServiceRunning(SensorListen.class, this)) {
                     startImg.setImageResource(R.drawable.ic_power_off);
-                    Intent intent=new Intent(HomeActivity.this,SensorListen.class);
+                    Intent intent = new Intent(HomeActivity.this, SensorListen.class);
                     stopService(intent);
-                }
-                else{
+                } else {
                     startImg.setImageResource(R.drawable.ic_power_on);
-                    Intent intent=new Intent(HomeActivity.this,SensorListen.class);
+                    Intent intent = new Intent(HomeActivity.this, SensorListen.class);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(intent);
-                    }
-                    else{
+                    } else {
                         startService(intent);
                     }
                 }
 
                 break;
             case R.id.bell:
-                if(GetAction.CheckPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
-                    GetAction.pickAudio(this,GetAction.requestCode_mp3);
-                }
-                else
-                    GetAction.setPermision(this,Manifest.permission.READ_EXTERNAL_STORAGE,GetAction.requestCode_Permisstion);
+                if (GetAction.CheckPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    GetAction.pickAudio(this, GetAction.requestCode_mp3);
+                } else
+                    GetAction.setPermision(this, Manifest.permission.READ_EXTERNAL_STORAGE, GetAction.requestCode_Permisstion);
                 break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode==GetAction.requestCode_mp3 && resultCode==RESULT_OK && data!=null){
-            Uri uri=data.getData();
-            ConstansPin.putString(this,GetAction.URI_MP3,uri.toString());
+        if (requestCode == GetAction.requestCode_mp3 && resultCode == RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            Log.e("URL", uri.toString());
+            ConstansPin.putString(this, GetAction.URI_MP3, FileUtils.getPath(this, uri));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

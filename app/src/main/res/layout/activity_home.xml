@@ -4,118 +4,127 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.HomeActivity"
-    android:background="@drawable/background_home">
+    android:background="@drawable/background_home"
+    tools:context=".view.HomeActivity">
 
     <ImageView
+        android:id="@+id/start"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_250sdp"
+        android:layout_centerInParent="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:padding="@dimen/_35sdp"
-        android:layout_width="@dimen/_250sdp"
-        android:layout_height="@dimen/_250sdp"
-        android:src="@drawable/ic_power_on"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="220dp"
-        android:id="@+id/start"/>
+        android:src="@drawable/ic_power_on" />
+
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/title"
-        android:text="Activate motion alarm"
-        android:textSize="30sp"
+        android:layout_above="@id/start"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"/>
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Activate motion alarm"
+        android:textSize="30sp" />
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/_80sdp"
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/cardview_shadow_end_color">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/bell"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="20dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="8dp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="60dp"
-                android:src="@drawable/ic_bell"
-                android:id="@+id/bell" />
+                android:src="@drawable/ic_bell" />
+
             <TextView
+                android:id="@+id/sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/sound"
-                android:textSize="12sp"
+                android:layout_below="@id/bell"
+                android:layout_marginLeft="80dp"
                 android:text="Set \n sound"
                 android:textColor="#000000"
-                android:layout_below="@id/bell"
-                android:layout_marginLeft="80dp"/>
+                android:textSize="12sp" />
+
             <ImageView
+                android:id="@+id/charge"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/bell"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="8dp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_charger"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@id/bell"
-                android:id="@+id/charge"/>
+                android:src="@drawable/ic_charger" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Charge \n warning"
                 android:layout_below="@id/charge"
-                android:layout_toRightOf="@+id/sound"
                 android:layout_marginLeft="30dp"
-                android:textSize="12sp"
-                android:textColor="#000000"/>
+                android:layout_toRightOf="@+id/sound"
+                android:text="Charge \n warning"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
             <ImageView
+                android:id="@+id/pin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/charge"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="8dp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_password"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@id/charge"
-                android:id="@+id/pin"/>
+                android:src="@drawable/ic_password" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/pin"
+                android:layout_marginLeft="45dp"
                 android:layout_toRightOf="@id/charge"
                 android:text="PIN"
                 android:textColor="#000000"
-                android:textSize="12sp"
-                android:layout_marginLeft="45dp"/>
+                android:textSize="12sp" />
+
             <ImageView
+                android:id="@+id/setting"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/pin"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="8dp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_wheel"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@id/pin"
-                android:id="@+id/setting"/>
+                android:src="@drawable/ic_wheel" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/setting"
+                android:layout_marginLeft="37dp"
+                android:layout_toRightOf="@id/pin"
                 android:text="Setting"
                 android:textColor="#000000"
-                android:textSize="12dp"
-                android:layout_below="@id/setting"
-                android:layout_toRightOf="@id/pin"
-                android:layout_marginLeft="37dp"/>
+                android:textSize="12dp" />
 
         </RelativeLayout>
 

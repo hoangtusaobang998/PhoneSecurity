@@ -21,7 +21,6 @@ import com.devpro.phonesecurity.service.SensorListen;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static com.devpro.phonesecurity.view.pinlock.ConstansPin.KEY_PASS;
 
 public class PinLockActivity extends AppCompatActivity {

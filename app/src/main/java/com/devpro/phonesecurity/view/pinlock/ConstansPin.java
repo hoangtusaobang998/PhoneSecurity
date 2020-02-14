@@ -27,4 +27,6 @@ public class ConstansPin {
         return AnimationUtils.loadAnimation(context, id);
     }
 
+    //Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", fileS);
+
 }

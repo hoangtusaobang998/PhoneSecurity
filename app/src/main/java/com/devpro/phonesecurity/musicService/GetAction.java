@@ -55,7 +55,7 @@ public class GetAction{
     }
     public static void pickAudio(Context context,int code_mp3){
         Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("audio/mp3");
+        intent.setType("audio/*");
         Activity activity=(Activity) context;
         activity.startActivityForResult(intent,code_mp3);
 
