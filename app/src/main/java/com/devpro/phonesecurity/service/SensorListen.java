@@ -115,10 +115,12 @@ public class SensorListen extends Service implements SensorEventListener {
 
     }
 
-    public void playMusic(){
-        if (player != null){
-            player.setAudioStreamType(AudioManager.MODE_IN_COMMUNICATION);
-            player.start();
+    public void playMusic() {
+        if (player != null) {
+            if (!player.isPlaying()) {
+                player.setAudioStreamType(AudioManager.MODE_IN_COMMUNICATION);
+                player.start();
+            }
         }
     }
 
