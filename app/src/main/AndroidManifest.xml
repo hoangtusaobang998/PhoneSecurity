@@ -6,8 +6,16 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-feature
+        android:name="android.hardware.fingerprint"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -19,11 +27,12 @@
         <activity
             android:name=".view.pinlock.PinLockActivity"
             android:theme="@style/AppThemesss">
+
         </activity>
         <activity
             android:name=".view.splashscreen.SplashActivity"
-            android:screenOrientation="portrait"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemesss">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,18 +40,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.HomeActivity" android:theme="@style/AppThemesss"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemesss" />
 
         <service android:name=".service.SensorListen" />
         <receiver android:name=".receiver.ReceiverPower">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.PlayerServicePower"/>
+        <service android:name=".service.PlayerServicePower" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

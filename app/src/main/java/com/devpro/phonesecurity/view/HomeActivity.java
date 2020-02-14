@@ -37,6 +37,7 @@ import com.devpro.phonesecurity.receiver.ReceiverPower;
 import com.devpro.phonesecurity.service.PlayerServicePower;
 import com.devpro.phonesecurity.service.SensorListen;
 import com.devpro.phonesecurity.musicService.ConstansPin;
+import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 
 import java.net.Inet4Address;
 
@@ -104,6 +105,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ll_pin:
+                startActivity(new Intent(this, PinLockActivity.class));
 //                code...
                 break;
             case R.id.ll_setting:

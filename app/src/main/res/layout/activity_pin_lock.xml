@@ -14,7 +14,8 @@
         android:layout_above="@id/txt_pass"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_12sdp"
-        android:src="@drawable/ic_fingerprint" />
+        android:src="@drawable/ic_fingerprint"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txt_pass"

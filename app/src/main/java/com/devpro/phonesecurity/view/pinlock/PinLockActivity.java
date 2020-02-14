@@ -1,13 +1,21 @@
 package com.devpro.phonesecurity.view.pinlock;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.adapter.CustomPassAdapter;
@@ -23,11 +32,16 @@ import com.devpro.phonesecurity.listen.FingerprintListen;
 import com.devpro.phonesecurity.musicService.ConstansPin;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.service.SensorListen;
+import com.devpro.phonesecurity.view.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_CODE;
+import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_FINGERPRIENT;
+import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_P;
 import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_PASS;
+import static com.devpro.phonesecurity.musicService.ConstansPin.NULLPOIN;
 
 public class PinLockActivity extends AppCompatActivity implements FingerprintListen {
 
@@ -58,17 +72,15 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
         mapped();
         addlist();
         clickitem();
-        if (!GetAction.CheckPermission(this, Manifest.permission.USE_FINGERPRINT)) {
-            GetAction.setPermision(this, Manifest.permission.USE_FINGERPRINT, 999);
-        } else {
-            ConstansPin.Fingerpint(this, this);
-        }
-
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == KEY_P) {
+            checkP();
+        }
     }
 
     @SuppressLint("WrongViewCast")
@@ -76,6 +88,7 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
         img_fingerprint = findViewById(R.id.img_fingerprint);
         list_phone = new ArrayList<>();
         view_pass = findViewById(R.id.gridpass);
+        txt_passi = findViewById(R.id.txt_pass);
         adapter_pass = new CustomPassAdapter();
         view_pass.setAdapter(adapter_pass);
         p1 = findViewById(R.id.p1);
@@ -86,7 +99,21 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
         p6 = findViewById(R.id.p6);
         passwordsShe = ConstansPin.getString(this, KEY_PASS);
         passwords = ConstansPin.getString(this, KEY_PASS);
+        if (ConstansPin.getString(this, KEY_FINGERPRIENT) != NULLPOIN) {
+            img_fingerprint.setVisibility(View.VISIBLE);
+            checkP();
+        } else {
+            ConstansPin.putString(this, KEY_FINGERPRIENT, "abc");
+        }
 
+    }
+
+    private void checkP() {
+        if (!GetAction.CheckPermission(this, Manifest.permission.USE_FINGERPRINT)) {
+            GetAction.setPermision(this, Manifest.permission.USE_FINGERPRINT, KEY_P);
+        } else {
+            ConstansPin.Fingerpint(this, this);
+        }
     }
 
     private void addlist() {
@@ -105,7 +132,7 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
         adapter_pass.setClickListent(new CustomPassAdapter.ClickListent() {
             @Override
             public void clickitem(String pass) {
-                //txt_passi.setText(R.string.pass);
+                txt_passi.setText(R.string.pass);
                 clickadditemlisten(pass);
                 am.playSoundEffect(AudioManager.FX_KEY_CLICK, vol);
             }
@@ -204,83 +231,6 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
 
     }
 
-    private void show_pass() {
-        String is_pass = "";
-        for (String pass : password) {
-            is_pass += pass;
-        }
-        Log.e("i", is_pass.length() + "");
-        if (is_pass.length() == 6) {
-            final String finalIs_pass = is_pass;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //Code ...
-                    if (passwords == null) {
-
-                        for (int i = 0; i < password.length; i++) {
-                            password[i] = "";
-                        }
-                        setnulldrawble();
-
-
-                    } else {
-                        if (passwordsShe == null) {
-                            if (passwordsconfirm.equals(finalIs_pass)) {
-
-
-                            } else {
-                                for (int i = 0; i < password.length; i++) {
-                                    password[i] = "";
-                                }
-                                setnulldrawble();
-                                //txt_passi.setText(getString(R.string.nopassconfirm));
-                            }
-
-                        } else {
-                            if (finalIs_pass.equals(passwordsShe)) {
-
-                                if (getIntent().getIntExtra("KEY_CODE", 2) == 1) {
-
-                                    setnulldrawble();
-                                    for (int i = 0; i < password.length; i++) {
-                                        password[i] = "";
-                                    }
-
-                                } else {
-                                    //
-                                }
-                            } else {
-                                for (int i = 0; i < password.length; i++) {
-                                    password[i] = "";
-                                }
-                                setnulldrawble();
-                                //txt_passi.setText(getString(R.string.nopasscomfic));
-                                syntax_error++;
-                                if (syntax_error == 5) {
-
-                                }
-                                if (syntax_error == 6) {
-
-
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }, 100);
-        }
-        if (is_pass.length() == 0) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //Code ...
-                }
-            }, 100);
-        }
-    }
-
     private void set_add_pass_icon(int i) {
         switch (i) {
             case P1: {
@@ -329,6 +279,110 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
         setnullIconDrawable(p6);
     }
 
+    private void show_pass() {
+        String is_pass = "";
+        for (String pass : password) {
+            is_pass += pass;
+        }
+        Log.e("i", is_pass.length() + "");
+        if (is_pass.length() == 6) {
+            final String finalIs_pass = is_pass;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Code ...
+                    if (passwords == null) {
+
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PinLockActivity.this);
+                        builder.setTitle(getString(R.string.confirm_two));
+                        builder.setMessage(getString(R.string.confirm_two_one) + finalIs_pass);
+                        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                passwords = finalIs_pass;
+                                passwordsconfirm = finalIs_pass;
+                                txt_passi.setText(getString(R.string.passcomfic));
+                                dialog.cancel();
+                            }
+                        });
+
+                        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        builder.show();
+                        for (int i = 0; i < password.length; i++) {
+                            password[i] = "";
+                        }
+                        setnulldrawble();
+
+                    } else {
+
+                        if (passwordsShe == null) {
+                            if (passwordsconfirm.equals(finalIs_pass)) {
+
+                                ConstansPin.putString(PinLockActivity.this, KEY_PASS, finalIs_pass);
+                                Toast.makeText(PinLockActivity.this, getString(R.string.pass_sussce), Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
+
+                            } else {
+                                for (int i = 0; i < password.length; i++) {
+                                    password[i] = "";
+                                }
+                                setnulldrawble();
+                                txt_passi.setText(getString(R.string.nopassconfirm));
+                            }
+
+                        } else {
+                            if (finalIs_pass.equals(passwordsShe)) {
+
+                                if (getIntent().getIntExtra(KEY_CODE, 2) == 1) {
+                                    //Off pass
+                                    setnulldrawble();
+                                    for (int i = 0; i < password.length; i++) {
+                                        password[i] = "";
+                                    }
+
+                                } else {
+
+                                    //code
+                                    onSusscePass();
+                                    //
+                                }
+                            } else {
+                                for (int i = 0; i < password.length; i++) {
+                                    password[i] = "";
+                                }
+                                setnulldrawble();
+                                txt_passi.setText(getString(R.string.nopasscomfic));
+                                syntax_error++;
+                                if (syntax_error == 5) {
+
+                                }
+                                if (syntax_error == 6) {
+                                    finish();
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }, 100);
+        }
+        if (is_pass.length() == 0) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Code ...
+                }
+            }, 100);
+        }
+    }
+
     @Override
     public void onFailed() {
         img_fingerprint.setImageResource(R.drawable.ic_fingerprint_red);
@@ -348,4 +402,13 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
     public void onAuthenticationHelp() {
 
     }
+
+    private void onSusscePass() {
+        if (GetAction.checkServiceRunning(SensorListen.class, this)) {
+            Intent intent = new Intent(PinLockActivity.this, SensorListen.class);
+            stopService(intent);
+        }
+    }
+
+
 }

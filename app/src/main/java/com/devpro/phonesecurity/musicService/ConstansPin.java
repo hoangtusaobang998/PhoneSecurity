@@ -33,6 +33,8 @@ import static android.content.Context.KEYGUARD_SERVICE;
 
 public class ConstansPin {
     public static final String KEY_PASS = "KEY_PASS";
+    public static final String KEY_CODE = "KEY_CODE";
+    public static final int KEY_P = 999;
     public static final String KEY_FINGERPRIENT = "KEY_FINGERPRIENT";
     private static final String DATA = "DATA";
     public static final String NULLPOIN = null;

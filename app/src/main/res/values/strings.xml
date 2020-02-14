@@ -3,4 +3,12 @@
     <string name="deletex">Space</string>
     <string name="pass">Password consists of 6 numbers</string>
     <string name="detail_permission">If you want to use a favorite song in your device as an alarm ringtone. Then you need to authorize the application to be able to set the alarm music!</string>
+    <string name="yes">Yes</string>
+    <string name="confirm_two">Confirm</string>
+    <string name="confirm_two_one">You still want to use the password:</string>
+    <string name="passcomfic">Enter the password</string>
+    <string name="no">Cancel</string>
+    <string name="pass_sussce">Add password successfully</string>
+    <string name="nopassconfirm">Password incorrect\'</string>
+    <string name="nopasscomfic">Wrong password</string>
 </resources>
