@@ -18,8 +18,7 @@ public class ReceiverPower extends BroadcastReceiver {
         }else if(action.equals(Intent.ACTION_POWER_DISCONNECTED)){
             Toast.makeText(context , "Warning" , Toast.LENGTH_SHORT).show();
             GetAction.setVolum(context);
-            MediaPlayer mediaPlayer=MediaPlayer.create(context, R.raw.musicdefault);
-            mediaPlayer.start();
+//            GetAction.playMusicDefault(context);
         }
     }
 }

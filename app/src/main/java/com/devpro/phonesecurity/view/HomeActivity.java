@@ -1,17 +1,30 @@
 package com.devpro.phonesecurity.view;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.devpro.phonesecurity.R;
+import com.devpro.phonesecurity.musicService.GetAction;
+import com.devpro.phonesecurity.receiver.ReceiverBackground;
 import com.devpro.phonesecurity.service.SensorListen;
 
 import java.net.Inet4Address;
@@ -27,6 +40,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mapping();
         startImg.setImageResource(R.drawable.ic_power_off);
         startImg.setOnClickListener(this);
+        bellImg.setOnClickListener(this);
     }
     private void mapping(){
         startImg = findViewById(R.id.start);
@@ -40,25 +54,50 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start:
-                if(i==0){
-                    i=1;
+                if(GetAction.checkServiceRunning(SensorListen.class,this)){
+                    startImg.setImageResource(R.drawable.ic_power_off);
                     Intent intent=new Intent(HomeActivity.this,SensorListen.class);
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                    stopService(intent);
+                }
+                else{
+                    startImg.setImageResource(R.drawable.ic_power_on);
+                    Intent intent=new Intent(HomeActivity.this,SensorListen.class);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(intent);
                     }
                     else{
                         startService(intent);
                     }
-                    startImg.setImageResource(R.drawable.ic_power_on);
-                }
-                else if(i==1){
-                    i=0;
-                    Intent intent=new Intent(HomeActivity.this,SensorListen.class);
-                    stopService(intent);
-                    startImg.setImageResource(R.drawable.ic_power_off);
                 }
                 break;
-
+            case R.id.bell:
+                if(GetAction.CheckPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
+                    GetAction.pickAudio(this,GetAction.requestCode_mp3);
+                }
+                else
+                    GetAction.setPermision(this,Manifest.permission.READ_EXTERNAL_STORAGE,GetAction.requestCode_Permisstion);
+                break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==GetAction.requestCode_mp3 && resultCode==RESULT_OK && data!=null){
+            Uri uri=data.getData();
+            GetAction.uri_String=uri.toString();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

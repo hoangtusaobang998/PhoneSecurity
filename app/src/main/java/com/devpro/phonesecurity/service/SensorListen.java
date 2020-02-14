@@ -10,6 +10,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -28,12 +29,9 @@ public class SensorListen extends Service implements SensorEventListener {
     private Sensor mSensor;
     private Sensor accelerometer;
     private static final int SENSOR_SENSITIVITY = 4;
-    private float[] mGravity;
-    private float mAccel;
-    private float mAccelCurrent;
-    private float mAccelLast;
-    int mSwitchSet, pSwitchSet = 0;
-    int chargerFlag, chargerFlag1, chargerFlag2 = 0;
+    int pSwitchSet = 0;
+    private MediaPlayer player;
+    private MediaPlayer player_uri;
 
     @Override
     public void onCreate() {
@@ -42,6 +40,7 @@ public class SensorListen extends Service implements SensorEventListener {
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         sensorMan = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        player=MediaPlayer.create(this,R.raw.musicdefault);
     }
 
     @Nullable
@@ -52,6 +51,11 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(GetAction.uri_String.length()!=0){
+            player_uri=MediaPlayer.create(this,Uri.parse(GetAction.uri_String));
+        }
+        else
+            player_uri=MediaPlayer.create(this,R.raw.musicdefault);
         final String CHANNEL_ID = "sersorListen_id";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel test = new NotificationChannel(CHANNEL_ID, "sersorListen_id", NotificationManager.IMPORTANCE_DEFAULT);
@@ -69,44 +73,32 @@ public class SensorListen extends Service implements SensorEventListener {
                     SensorManager.SENSOR_DELAY_NORMAL);
 
         }
-
+        else{
+            sensorMan.registerListener(this, accelerometer,
+                    SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(this, mSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
         return START_STICKY;
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            mGravity = event.values.clone();
-            // Shake detection
-            float x = mGravity[0];
-            float y = mGravity[1];
-            float z = mGravity[2];
-            mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float) Math.sqrt(x * x + y * y + z * z);
-            float delta = mAccelCurrent - mAccelLast;
-            mAccel = mAccel * 0.9f + delta;
-
-            // motion you want to detect
-            if (mAccel > 10) {
-                Toast.makeText(SensorListen.this, "Sensor Run Hua Bc", Toast.LENGTH_SHORT).show();
+            if(event.values[0]>1.0f || event.values[1]>1.0f){
                 GetAction.setVolum(this);
-                GetAction.playMusicDefault(this);
-
+                checkPlay();
             }
         } else if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
                 if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
-                    GetAction.playMusicDefault(this);
-                    Toast.makeText(getApplicationContext(), "Gần", Toast.LENGTH_SHORT).show();
+                    GetAction.setVolum(this);
+                    checkPlay();
                 } else if (pSwitchSet == 1) {
-                    GetAction.playMusicDefault(this);
-                    Toast.makeText(getApplicationContext(), "Xa", Toast.LENGTH_SHORT).show();
-
+                    GetAction.setVolum(this);
+                    checkPlay();
                 }
             }
-        }
-        else{
-            onDestroy();
         }
     }
 
@@ -115,12 +107,50 @@ public class SensorListen extends Service implements SensorEventListener {
 
     }
 
+    public void playMediaDefault(){
+        if(player.isPlaying()==false){
+            player.start();
+        }
+    }
+    public void stopMediaDefault(){
+        if(player.isPlaying()){
+            player.stop();
+        }
+    }
+    public void playMediaUri(){
+        if(player_uri.isPlaying()==false){
+            player_uri.start();
+        }
+    }
+    public void stopMediaUri(){
+        if(player_uri.isPlaying()){
+            player_uri.stop();
+        }
+    }
+
+    public void checkPlay(){
+        if(GetAction.uri_String.length()!=0){
+            playMediaUri();
+        }
+        else{
+            playMediaDefault();
+        }
+    }
+    public void checkStop(){
+        if(GetAction.uri_String.length()!=0){
+            stopMediaUri();
+        }
+        else
+            stopMediaDefault();
+    }
+
     @Override
     public void onDestroy() {
-        Log.d("rr","as");
         sensorMan.unregisterListener(this);
         mSensorManager.unregisterListener(this);
+        checkStop();
         super.onDestroy();
-        
     }
+
+
 }
