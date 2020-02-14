@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -45,6 +47,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         startImg.setImageResource(R.drawable.ic_power_off);
         startImg.setOnClickListener(this);
         bellImg.setOnClickListener(this);
+        chargeImg.setOnClickListener(this);
+        pinImg.setOnClickListener(this);
+        settingImg.setOnClickListener(this);
     }
 
     private void mapping() {
@@ -76,9 +81,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bell:
                 if (GetAction.CheckPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    GetAction.pickAudio(this, GetAction.requestCode_mp3);
+                    AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                    builder.setTitle("Choose music");
+                    builder.setPositiveButton("Music local", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            GetAction.pickAudio(HomeActivity.this, GetAction.requestCode_mp3);
+                        }
+                    });
+                    builder.setNegativeButton("Music default", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ConstansPin.putString(HomeActivity.this,GetAction.URI_MP3,ConstansPin.NULLPOIN);
+                        }
+                    });
+                    builder.show();
+
                 } else
                     GetAction.setPermision(this, Manifest.permission.READ_EXTERNAL_STORAGE, GetAction.requestCode_Permisstion);
+                break;
+            case R.id.charge:
+//                code....
+                break;
+            case R.id.pin:
+//                code...
+                break;
+            case R.id.setting:
+//                code...
                 break;
         }
     }
