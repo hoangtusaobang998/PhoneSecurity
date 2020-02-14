@@ -3,6 +3,7 @@ package com.devpro.phonesecurity.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -22,6 +23,7 @@ import com.devpro.phonesecurity.BuildConfig;
 import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.musicService.ConstansPin;
+import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 
 import java.io.File;
 
@@ -56,7 +58,8 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        Intent it=new Intent(this, PinLockActivity.class);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this,1234,it,0);
         uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);
         if (uri_Path == ConstansPin.NULLPOIN) {
             player = MediaPlayer.create(this, R.raw.musicdefault);
@@ -71,9 +74,11 @@ public class SensorListen extends Service implements SensorEventListener {
             assert manage != null;
             manage.createNotificationChannel(test);
             Notification.Builder notify = new Notification.Builder(this, CHANNEL_ID);
-            notify.setContentTitle("Messenger")
-                    .setContentText("Running")
-                    .setSmallIcon(R.drawable.ic_notifications);
+            notify.setContentTitle("Stop music")
+                    .setContentText("")
+                    .setSmallIcon(R.drawable.ic_notifications)
+                    .setContentIntent(pendingIntent)
+                    .build();
             startForeground(1, notify.build());
             sensorMan.registerListener(this, accelerometer,
                     SensorManager.SENSOR_DELAY_UI);
