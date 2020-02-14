@@ -14,17 +14,14 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import com.devpro.phonesecurity.BuildConfig;
 import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.musicService.GetAction;
-import com.devpro.phonesecurity.view.pinlock.ConstansPin;
+import com.devpro.phonesecurity.musicService.ConstansPin;
 
 import java.io.File;
 

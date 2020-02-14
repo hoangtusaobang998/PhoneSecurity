@@ -1,7 +1,9 @@
 package com.devpro.phonesecurity.view.pinlock;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -17,13 +19,17 @@ import android.widget.TextView;
 
 import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.adapter.CustomPassAdapter;
+import com.devpro.phonesecurity.listen.FingerprintListen;
+import com.devpro.phonesecurity.musicService.ConstansPin;
+import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.service.SensorListen;
 
 import java.util.ArrayList;
 import java.util.List;
-import static com.devpro.phonesecurity.view.pinlock.ConstansPin.KEY_PASS;
 
-public class PinLockActivity extends AppCompatActivity {
+import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_PASS;
+
+public class PinLockActivity extends AppCompatActivity implements FingerprintListen {
 
     private GridView view_pass;
     private CustomPassAdapter adapter_pass;
@@ -42,20 +48,32 @@ public class PinLockActivity extends AppCompatActivity {
     private String passwordsconfirm = null;
     private String passwordsShe = null;
     private int syntax_error = 0;
+    private ImageView img_fingerprint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_pin_lock);
-        startService(new Intent(this, SensorListen.class));
         mapped();
         addlist();
         clickitem();
+        if (!GetAction.CheckPermission(this, Manifest.permission.USE_FINGERPRINT)) {
+            GetAction.setPermision(this, Manifest.permission.USE_FINGERPRINT, 999);
+        } else {
+            ConstansPin.Fingerpint(this, this);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @SuppressLint("WrongViewCast")
     private void mapped() {
+        img_fingerprint = findViewById(R.id.img_fingerprint);
         list_phone = new ArrayList<>();
         view_pass = findViewById(R.id.gridpass);
         adapter_pass = new CustomPassAdapter();
@@ -311,4 +329,23 @@ public class PinLockActivity extends AppCompatActivity {
         setnullIconDrawable(p6);
     }
 
+    @Override
+    public void onFailed() {
+        img_fingerprint.setImageResource(R.drawable.ic_fingerprint_red);
+    }
+
+    @Override
+    public void onSussce() {
+        img_fingerprint.setImageResource(R.drawable.ic_fingerprint_sussce);
+    }
+
+    @Override
+    public void onFailedMuch() {
+
+    }
+
+    @Override
+    public void onAuthenticationHelp() {
+
+    }
 }

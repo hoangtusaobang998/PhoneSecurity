@@ -16,12 +16,18 @@ import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.service.PlayerServicePower;
 
 public class ReceiverPower extends BroadcastReceiver {
+    public static boolean is = false;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         Intent intentService = new Intent(context, PlayerServicePower.class);
         if (action.equals(Intent.ACTION_POWER_CONNECTED)) {
+            ///dsjahdkjashdsa
+            if (!is) {
+
+            }
 
             context.stopService(intentService);
 
@@ -43,6 +49,11 @@ public class ReceiverPower extends BroadcastReceiver {
         intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         BroadcastReceiver broadcastReceiver = new ReceiverPower();
         context.registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    public static final void unBroadcast(Context context) {
+        BroadcastReceiver broadcastReceiver = new ReceiverPower();
+        context.unregisterReceiver(broadcastReceiver);
     }
 
 }

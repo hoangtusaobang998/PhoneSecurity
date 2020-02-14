@@ -4,13 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.pinlock.PinLockActivity"
-    android:background="@drawable/background_home">
+    android:background="@drawable/background_home"
+    tools:context=".view.pinlock.PinLockActivity">
+
+    <ImageView
+        android:id="@+id/img_fingerprint"
+        android:layout_width="@dimen/_65sdp"
+        android:layout_height="@dimen/_65sdp"
+        android:layout_above="@id/txt_pass"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:src="@drawable/ic_fingerprint" />
+
+    <TextView
+        android:id="@+id/txt_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/a"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-thin"
+        android:text="@string/pass"
+        android:textSize="@dimen/_14sdp" />
 
     <LinearLayout
         android:id="@+id/a"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_30sdp"
         android:layout_above="@id/gridpass"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_12sdp"
