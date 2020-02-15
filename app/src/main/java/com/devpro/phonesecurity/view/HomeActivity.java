@@ -61,8 +61,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             startImg.setImageResource(R.drawable.ic_power_on);
             background.setBackgroundResource(R.drawable.background_gradien_on);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                startForegroundService(new Intent(this, SensorListen.class));
         }
         super.onStart();
     }
@@ -227,8 +225,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             startImg.setImageResource(R.drawable.ic_power_on);
             background.setBackgroundResource(R.drawable.background_gradien_on);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                startForegroundService(new Intent(this, SensorListen.class));
         }
     }
 
