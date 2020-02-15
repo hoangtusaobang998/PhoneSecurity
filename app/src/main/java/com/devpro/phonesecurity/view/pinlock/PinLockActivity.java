@@ -12,12 +12,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,6 +33,7 @@ import com.devpro.phonesecurity.adapter.CustomPassAdapter;
 import com.devpro.phonesecurity.listen.FingerprintListen;
 import com.devpro.phonesecurity.musicService.ConstansPin;
 import com.devpro.phonesecurity.musicService.GetAction;
+import com.devpro.phonesecurity.service.PlayerServicePower;
 import com.devpro.phonesecurity.service.SensorListen;
 import com.devpro.phonesecurity.view.HomeActivity;
 
@@ -103,7 +106,7 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
             img_fingerprint.setVisibility(View.VISIBLE);
             checkP();
         } else {
-            ConstansPin.putString(this, KEY_FINGERPRIENT, "abc");
+
         }
 
     }
@@ -132,6 +135,7 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
         adapter_pass.setClickListent(new CustomPassAdapter.ClickListent() {
             @Override
             public void clickitem(String pass) {
+                txt_passi.setTextColor(getResources().getColor(R.color.white));
                 txt_passi.setText(R.string.pass);
                 clickadditemlisten(pass);
                 am.playSoundEffect(AudioManager.FX_KEY_CLICK, vol);
@@ -358,6 +362,7 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
                                     password[i] = "";
                                 }
                                 setnulldrawble();
+                                txt_passi.setTextColor(Color.parseColor("#FF2323"));
                                 txt_passi.setText(getString(R.string.nopasscomfic));
                                 syntax_error++;
                                 if (syntax_error == 5) {
@@ -386,11 +391,19 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
     @Override
     public void onFailed() {
         img_fingerprint.setImageResource(R.drawable.ic_fingerprint_red);
+        txt_passi.setText(getString(R.string.fingfailed));
     }
 
     @Override
     public void onSussce() {
         img_fingerprint.setImageResource(R.drawable.ic_fingerprint_sussce);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                stopService();
+                finish();
+            }
+        }, 350);
     }
 
     @Override
@@ -404,11 +417,27 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
     }
 
     private void onSusscePass() {
+        stopService();
+        finish();
+    }
+
+    private void stopService() {
         if (GetAction.checkServiceRunning(SensorListen.class, this)) {
             Intent intent = new Intent(PinLockActivity.this, SensorListen.class);
             stopService(intent);
         }
+        if (GetAction.checkServiceRunning(PlayerServicePower.class, this)) {
+            Intent intent = new Intent(PinLockActivity.this, PlayerServicePower.class);
+            stopService(intent);
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (passwords != NULLPOIN) {
 
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

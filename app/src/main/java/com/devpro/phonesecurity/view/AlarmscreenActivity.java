@@ -49,6 +49,7 @@ public class AlarmscreenActivity extends AppCompatActivity {
             public boolean handleMessage(@NonNull Message msg) {
                 if (msg.what == -1) {
                     background.setBackgroundResource(R.drawable.background_home);
+                    return false;
                 }
                 if (msg.what % 2 == 0) {
                     background.setBackgroundResource(R.drawable.background_gradien_on);

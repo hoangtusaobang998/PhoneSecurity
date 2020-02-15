@@ -16,6 +16,8 @@ import com.devpro.phonesecurity.listen.Play;
 import com.devpro.phonesecurity.musicService.ConstansPin;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.service.PlayerServicePower;
+import com.devpro.phonesecurity.service.SensorListen;
+import com.devpro.phonesecurity.view.AlarmscreenActivity;
 
 public class ReceiverPower extends BroadcastReceiver {
 
@@ -33,12 +35,8 @@ public class ReceiverPower extends BroadcastReceiver {
 
             } else if (action.equals(Intent.ACTION_POWER_DISCONNECTED)) {
                 wasScreenOn = true;
-                if (!GetAction.checkServiceRunning(PlayerServicePower.class, context)) {
-                    if (GetAction.getSDK() >= Build.VERSION_CODES.O) {
-                        context.startForegroundService(intentService);
-                    } else {
-                        context.startService(intentService);
-                    }
+                if (!GetAction.checkServiceRunning(PlayerServicePower.class, context) && !GetAction.checkServiceRunning(SensorListen.class, context)) {
+                    context.startService(intentService);
                 }
             }
         } else {

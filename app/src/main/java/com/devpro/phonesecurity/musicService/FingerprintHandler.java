@@ -45,32 +45,21 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     //onAuthenticationError is called when a fatal error has occurred. It provides the error code and error message as its parameters//
 
     public void onAuthenticationError(int errMsgId, CharSequence errString) {
-
-        //I’m going to display the results of fingerprint authentication as a series of toasts.
-        //Here, I’m creating the message that’ll be displayed if an error occurs//
-
         fingerprintListen.onFailedMuch();
     }
 
     @Override
-
-    //onAuthenticationFailed is called when the fingerprint doesn’t match with any of the fingerprints registered on the device//
 
     public void onAuthenticationFailed() {
         fingerprintListen.onFailed();
     }
 
     @Override
-
-    //onAuthenticationHelp is called when a non-fatal error has occurred. This method provides additional information about the error,
-    //so to provide the user with as much feedback as possible I’m incorporating this information into my toast//
     public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
         fingerprintListen.onAuthenticationHelp();
     }
 
     @Override
-
-    //onAuthenticationSucceeded is called when a fingerprint has been successfully matched to one of the fingerprints stored on the user’s device//
     public void onAuthenticationSucceeded(
             FingerprintManager.AuthenticationResult result) {
 

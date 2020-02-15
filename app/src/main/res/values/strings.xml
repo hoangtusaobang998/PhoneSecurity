@@ -11,4 +11,5 @@
     <string name="pass_sussce">Add password successfully</string>
     <string name="nopassconfirm">Password incorrect\'</string>
     <string name="nopasscomfic">Wrong password</string>
+    <string name="fingfailed">Fingerprint does not match</string>
 </resources>

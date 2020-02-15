@@ -36,7 +36,8 @@ public class GetAction {
     public static final String URI_MP3 = "URI_MP3";
     public static final int show_Music = 1;
     public static final int show_Permission = 2;
-    public static final String SERVICE_SENSOR="SERVICE_SENSOR";
+    public static final String SERVICE_SENSOR = "SERVICE_SENSOR";
+    public static final String SERVICE_POWER = "SERVICE_POWER";
 
 
     public static void setVolum(Context context) {
@@ -45,7 +46,7 @@ public class GetAction {
         assert audioManager != null;
         audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
         int volumMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 2, 0);
     }
 
     public static void setNoVolum(Context context) {

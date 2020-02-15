@@ -44,6 +44,8 @@ import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 
 import java.net.Inet4Address;
 
+import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_FINGERPRIENT;
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView startImg, chargeImg, pin;
     LinearLayout bellLl, chargeLl, pinLl, settingLl;
@@ -61,6 +63,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         chargeLl.setOnClickListener(this);
         pinLl.setOnClickListener(this);
         settingLl.setOnClickListener(this);
+
     }
 
     private void mapping() {
@@ -78,6 +81,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start:
+                ConstansPin.putString(this, KEY_FINGERPRIENT, "abc");
                 if (GetAction.checkServiceRunning(SensorListen.class, this)) {
                     startImg.setImageResource(R.drawable.ic_power_off);
                     Intent intent = new Intent(HomeActivity.this, SensorListen.class);
@@ -178,6 +182,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (ConstansPin.getBoolean(this, ConstansPin.KEY_POWER)) {
             chargeImg.setImageResource(R.drawable.ic_charger_on);
+        }
+        if (!GetAction.checkServiceRunning(SensorListen.class, this)) {
+            startImg.setImageResource(R.drawable.ic_power_off);
+            background.setBackgroundResource(R.drawable.background_home);
+        } else {
+            startImg.setImageResource(R.drawable.ic_power_on);
+            background.setBackgroundResource(R.drawable.background_gradien_on);
         }
     }
 
