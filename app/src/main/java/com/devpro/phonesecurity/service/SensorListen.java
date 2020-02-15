@@ -39,8 +39,6 @@ public class SensorListen extends Service implements SensorEventListener {
     private static final int SENSOR_SENSITIVITY = 4;
     int pSwitchSet = 0;
     private MediaPlayer player;
-    private String uri_Path;
-    private Thread thread;
 
 
     public static boolean isPlaySensor = false;
@@ -65,7 +63,7 @@ public class SensorListen extends Service implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Intent it = new Intent(this, AlarmscreenActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1234, it, 0);
-        uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);
+        String uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);
         if (uri_Path == ConstansPin.NULLPOIN) {
             player = MediaPlayer.create(this, R.raw.musicdefault);
         } else {
@@ -137,13 +135,13 @@ public class SensorListen extends Service implements SensorEventListener {
                 accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
                 Intent it=new Intent(this,AlarmscreenActivity.class);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                it.putExtra(AlarmscreenActivity.KEY_RUNNING,GetAction.SERVICE_SENSOR);
                 startActivity(it);
 
             } else if (player.isPlaying()) {
                 isPlaySensor = false;
                 sensorMan.unregisterListener(this);
                 mSensorManager.unregisterListener(this);
-
             }
         }
     }

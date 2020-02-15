@@ -30,7 +30,6 @@ public class AlarmscreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarmscreen);
-        Log.d("tesst","123");
 //        if (getIntent().getExtras().get(KEY_RUNNING) != null) {
 //
 //        } else {
