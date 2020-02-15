@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,11 +30,12 @@ public class AlarmscreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarmscreen);
-        if (getIntent().getExtras().get(KEY_RUNNING) != null) {
-
-        } else {
-            finish();
-        }
+        Log.d("tesst","123");
+//        if (getIntent().getExtras().get(KEY_RUNNING) != null) {
+//
+//        } else {
+//            finish();
+//        }
         mapped();
         click();
         new Thread(new Run()).start();

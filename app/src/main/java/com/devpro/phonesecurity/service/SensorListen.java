@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
@@ -24,6 +25,7 @@ import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.listen.Play;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.musicService.ConstansPin;
+import com.devpro.phonesecurity.view.AlarmscreenActivity;
 import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 
 import java.io.File;
@@ -61,7 +63,7 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Intent it = new Intent(this, PinLockActivity.class);
+        Intent it = new Intent(this, AlarmscreenActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1234, it, 0);
         uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);
         if (uri_Path == ConstansPin.NULLPOIN) {
@@ -133,10 +135,15 @@ public class SensorListen extends Service implements SensorEventListener {
                 mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
                 sensorMan = (SensorManager) getSystemService(SENSOR_SERVICE);
                 accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+                Intent it=new Intent(this,AlarmscreenActivity.class);
+                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(it);
+
             } else if (player.isPlaying()) {
                 isPlaySensor = false;
                 sensorMan.unregisterListener(this);
                 mSensorManager.unregisterListener(this);
+
             }
         }
     }

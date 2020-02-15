@@ -27,13 +27,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:launchMode="singleTask"
             android:name=".view.AlarmscreenActivity"
             android:theme="@style/AppThemesss">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".view.pinlock.PinLockActivity"
@@ -48,7 +45,13 @@
         <activity
             android:name=".view.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemesss" />
+            android:theme="@style/AppThemesss">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".service.SensorListen" />
 
