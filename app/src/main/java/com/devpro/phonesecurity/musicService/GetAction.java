@@ -36,6 +36,7 @@ public class GetAction {
     public static final String URI_MP3 = "URI_MP3";
     public static final int show_Music = 1;
     public static final int show_Permission = 2;
+    public static final int show_pin=3;
     public static final String SERVICE_SENSOR = "SERVICE_SENSOR";
     public static final String SERVICE_POWER = "SERVICE_POWER";
 

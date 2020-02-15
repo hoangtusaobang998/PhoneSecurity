@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -46,12 +47,11 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public void onCreate() {
-        super.onCreate();
-
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         sensorMan = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        super.onCreate();
     }
 
     @Nullable
@@ -62,6 +62,7 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Intent it = new Intent(this, AlarmscreenActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1234, it, 0);
         String uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);

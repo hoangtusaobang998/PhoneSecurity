@@ -8,6 +8,7 @@ import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devpro.phonesecurity.R;
@@ -59,8 +61,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             startImg.setImageResource(R.drawable.ic_power_on);
             background.setBackgroundResource(R.drawable.background_gradien_on);
-            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
-                startForegroundService(new Intent(this,SensorListen.class));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                startForegroundService(new Intent(this, SensorListen.class));
         }
         super.onStart();
     }
@@ -136,8 +138,30 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ll_pin:
 
                 if (ConstansPin.getString(HomeActivity.this, ConstansPin.KEY_PASS) != ConstansPin.NULLPOIN) {
-                    pin.setImageResource(R.drawable.ic_password);
-                    ConstansPin.putString(HomeActivity.this, ConstansPin.KEY_PASS, ConstansPin.NULLPOIN);
+                    final Dialog dialog = new Dialog(this);
+                    dialog.setContentView(R.layout.dialog_detail);
+                    TextView txtDetail = dialog.findViewById(R.id.txt_detail_permission);
+                    Button btn_Del = dialog.findViewById(R.id.btn_done);
+                    Button btn_Cannel = dialog.findViewById(R.id.btn_setting);
+                    txtDetail.setText(getString(R.string.detail_pin));
+                    btn_Del.setText("Remove");
+                    btn_Cannel.setText("Cannel");
+                    btn_Cannel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    btn_Del.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            pin.setImageResource(R.drawable.ic_password);
+                            ConstansPin.putString(HomeActivity.this, ConstansPin.KEY_PASS, ConstansPin.NULLPOIN);
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.getWindow().setBackgroundDrawable(null);
+                    dialog.show();
                 } else {
                     startActivity(new Intent(this, PinLockActivity.class));
                 }
@@ -203,8 +227,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             startImg.setImageResource(R.drawable.ic_power_on);
             background.setBackgroundResource(R.drawable.background_gradien_on);
-            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
-                startForegroundService(new Intent(this,SensorListen.class));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                startForegroundService(new Intent(this, SensorListen.class));
         }
     }
 
