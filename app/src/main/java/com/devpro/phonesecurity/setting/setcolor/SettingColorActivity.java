@@ -33,7 +33,7 @@ public class SettingColorActivity extends AppCompatActivity {
         colors.add(new ColorModel(R.drawable.background_style6));
         colors.add(new ColorModel(R.drawable.background_style7));
         colors.add(new ColorModel(R.drawable.background_style8));
-        ColorAdapter colorAdapter = new ColorAdapter(colors , getApplicationContext());
+        ColorAdapter colorAdapter = new ColorAdapter(colors , this);
         recyclerView.setAdapter(colorAdapter);
     }
 }

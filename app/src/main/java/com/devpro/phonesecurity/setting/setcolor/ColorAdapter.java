@@ -1,5 +1,6 @@
 package com.devpro.phonesecurity.setting.setcolor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -19,10 +20,10 @@ import java.util.ArrayList;
 public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> {
 
     ArrayList<ColorModel> colorList;
-    Context context;
+    Activity context;
     public static final String key = "color saved";
 
-    public ColorAdapter(ArrayList<ColorModel> colorList, Context context) {
+    public ColorAdapter(ArrayList<ColorModel> colorList, Activity context) {
         this.colorList = colorList;
         this.context = context;
     }
@@ -43,11 +44,9 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context , HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("color" , color.getColor());
-               // HomeActivity.putColor(color.getColor() , context , key);
-                context.startActivity(intent);
+                HomeActivity.putColor(color.getColor() , context ,key);
+                context.setResult(Activity.RESULT_OK);
+                context.finish();
 
             }
         });

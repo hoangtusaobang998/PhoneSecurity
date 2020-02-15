@@ -16,6 +16,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
@@ -46,6 +47,7 @@ import com.devpro.phonesecurity.service.PlayerServicePower;
 import com.devpro.phonesecurity.service.PowerService;
 import com.devpro.phonesecurity.service.SensorListen;
 import com.devpro.phonesecurity.musicService.ConstansPin;
+import com.devpro.phonesecurity.setting.SettingActivity;
 import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 
 import java.net.Inet4Address;
@@ -55,19 +57,14 @@ import static com.devpro.phonesecurity.musicService.GetAction.SERVICE_POWER;
 import static com.devpro.phonesecurity.receiver.ReceiverPower.wasScreenOn;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String key = "color saved";
+    public static final String DATA = "Data";
     ImageView startImg, chargeImg, pin;
     LinearLayout bellLl, chargeLl, pinLl, settingLl;
     private RelativeLayout background;
 
     @Override
     protected void onStart() {
-        if (!GetAction.checkServiceRunning(SensorListen.class, this)) {
-            startImg.setImageResource(R.drawable.ic_power_off);
-            background.setBackgroundResource(R.drawable.background_home);
-        } else {
-            startImg.setImageResource(R.drawable.ic_power_on);
-            background.setBackgroundResource(R.drawable.background_gradien_on);
-        }
         super.onStart();
     }
 
@@ -96,6 +93,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         pinLl = findViewById(R.id.ll_pin);
         settingLl = findViewById(R.id.ll_setting);
     }
+    public static void putColor(int c , Context context , String key){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATA , context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(key , c).apply();
+    }
+    public static int getColor( Context context , String key){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATA , context.MODE_PRIVATE);
+        return sharedPreferences.getInt(key , -1);
+    }
 
     @Override
     public void onClick(View v) {
@@ -106,7 +112,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     startImg.setImageResource(R.drawable.ic_power_off);
                     Intent intent = new Intent(HomeActivity.this, SensorListen.class);
                     stopService(intent);
-                    background.setBackgroundResource(R.drawable.background_home);
+                    if (HomeActivity.getColor(HomeActivity.this , key) == -1){
+                        background.setBackgroundResource(R.drawable.background_home);
+                    }else{
+                        background.setBackgroundResource(HomeActivity.getColor(HomeActivity.this , key));
+                    }
                 } else {
                     background.setBackgroundResource(R.drawable.background_gradien_on);
                     startImg.setImageResource(R.drawable.ic_power_on);
@@ -173,7 +183,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //                code...
                 break;
             case R.id.ll_setting:
-//                code...
+                    Intent intent = new Intent(HomeActivity.this , SettingActivity.class);
+                    startActivityForResult(intent , 100);
                 break;
         }
     }
@@ -184,6 +195,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Uri uri = data.getData();
             Log.e("URL", uri.toString());
             ConstansPin.putString(this, GetAction.URI_MP3, FileUtils.getPath(this, uri));
+        }
+        else if(requestCode == 100 && resultCode == RESULT_OK){
+            background.setBackgroundResource(getColor(this , key));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -227,7 +241,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (!GetAction.checkServiceRunning(SensorListen.class, this)) {
             startImg.setImageResource(R.drawable.ic_power_off);
-            background.setBackgroundResource(R.drawable.background_home);
+           if (HomeActivity.getColor(HomeActivity.this,key)!=-1){
+
+               background.setBackgroundResource(HomeActivity.getColor(HomeActivity.this,key));
+
+           }else {
+               background.setBackgroundResource(R.drawable.background_home);
+           }
         } else {
             starServicePower();
             startImg.setImageResource(R.drawable.ic_power_on);

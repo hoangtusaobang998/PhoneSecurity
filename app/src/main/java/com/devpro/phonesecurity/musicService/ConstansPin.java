@@ -49,6 +49,15 @@ public class ConstansPin {
     public static void putString(Context context, String key, String path) {
         createSharedPreferences(context).edit().putString(key, path).apply();
     }
+    public static void putColor(int c , Context context , String key){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATA , context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(key , c).apply();
+    }
+    public static int getColor( Context context , String key){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATA , context.MODE_PRIVATE);
+        return sharedPreferences.getInt(key , -1);
+    }
 
     public static boolean getBoolean(Context context, String key) {
         return createSharedPreferences(context).getBoolean(key, false);
