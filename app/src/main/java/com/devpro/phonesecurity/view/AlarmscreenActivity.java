@@ -80,8 +80,10 @@ public class AlarmscreenActivity extends AppCompatActivity {
                         stopService(intent);
                     }
                     wasScreenOn = false;
+                    ConstansPin.putBoolean(AlarmscreenActivity.this,GetAction.SERVICE_RUNNING,false);
                     finish();
                 } else {
+//                    GetAction.SERVICE_RUN=false;
                     Intent intent = new Intent(AlarmscreenActivity.this, PinLockActivity.class);
                     startActivity(intent);
                     finish();

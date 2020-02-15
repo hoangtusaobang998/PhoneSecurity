@@ -65,6 +65,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStart() {
+        if (!GetAction.checkServiceRunning(SensorListen.class, this)) {
+            startImg.setImageResource(R.drawable.ic_power_off);
+            background.setBackgroundResource(R.drawable.background_home);
+        } else {
+            startImg.setImageResource(R.drawable.ic_power_on);
+            background.setBackgroundResource(R.drawable.background_gradien_on);
+            Boolean service_run=ConstansPin.getBoolean(this,GetAction.SERVICE_RUNNING);
+            if(service_run) {
+                Intent it = new Intent(HomeActivity.this, AlarmscreenActivity.class);
+                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                it.putExtra(AlarmscreenActivity.KEY_RUNNING, GetAction.SERVICE_SENSOR);
+                startActivity(it);
+            }
+        }
         super.onStart();
     }
 
