@@ -36,7 +36,6 @@ public class ReceiverPower extends BroadcastReceiver {
             } else if (action.equals(Intent.ACTION_POWER_DISCONNECTED)) {
                 wasScreenOn = true;
                 if (!GetAction.checkServiceRunning(PlayerServicePower.class, context) && !GetAction.checkServiceRunning(SensorListen.class, context)) {
-                    Toast.makeText(context, "True", Toast.LENGTH_SHORT).show();
                     context.startService(intentService);
                 }
             }
@@ -45,18 +44,6 @@ public class ReceiverPower extends BroadcastReceiver {
         }
     }
 
-    public static final void sendBroadcast(Context context) {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-        intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-        intentFilter.addAction(Intent.ACTION_BOOT_COMPLETED);
-        BroadcastReceiver broadcastReceiver = new ReceiverPower();
-        try {
-            context.registerReceiver(broadcastReceiver, intentFilter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }

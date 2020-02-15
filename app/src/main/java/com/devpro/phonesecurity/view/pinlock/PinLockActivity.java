@@ -46,6 +46,7 @@ import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_FINGERPRIENT
 import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_P;
 import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_PASS;
 import static com.devpro.phonesecurity.musicService.ConstansPin.NULLPOIN;
+import static com.devpro.phonesecurity.receiver.ReceiverPower.wasScreenOn;
 
 public class PinLockActivity extends AppCompatActivity implements FingerprintListen {
 
@@ -424,6 +425,7 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
     }
 
     private void stopService() {
+        wasScreenOn = false;
         if (GetAction.checkServiceRunning(SensorListen.class, this)) {
             Intent intent = new Intent(PinLockActivity.this, SensorListen.class);
             stopService(intent);

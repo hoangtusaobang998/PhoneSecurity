@@ -9,12 +9,15 @@ import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -40,6 +43,7 @@ import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.receiver.ReceiverBackground;
 import com.devpro.phonesecurity.receiver.ReceiverPower;
 import com.devpro.phonesecurity.service.PlayerServicePower;
+import com.devpro.phonesecurity.service.PowerService;
 import com.devpro.phonesecurity.service.SensorListen;
 import com.devpro.phonesecurity.musicService.ConstansPin;
 import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
@@ -47,6 +51,8 @@ import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 import java.net.Inet4Address;
 
 import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_FINGERPRIENT;
+import static com.devpro.phonesecurity.musicService.GetAction.SERVICE_POWER;
+import static com.devpro.phonesecurity.receiver.ReceiverPower.wasScreenOn;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView startImg, chargeImg, pin;
@@ -128,7 +134,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     ConstansPin.putBoolean(this, ConstansPin.KEY_POWER, true);
                     chargeImg.setImageResource(R.drawable.ic_charger_on);
-                    //ReceiverPower.sendBroadcast(this);
+                    starServicePower();
                 }
 
 
@@ -223,8 +229,28 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             startImg.setImageResource(R.drawable.ic_power_off);
             background.setBackgroundResource(R.drawable.background_home);
         } else {
+            starServicePower();
             startImg.setImageResource(R.drawable.ic_power_on);
             background.setBackgroundResource(R.drawable.background_gradien_on);
+        }
+        if (GetAction.checkServiceRunning(PowerService.class, HomeActivity.this)) {
+            if (wasScreenOn) {
+                Intent it = new Intent(this, AlarmscreenActivity.class);
+                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                it.putExtra(SERVICE_POWER, SERVICE_POWER);
+                startActivity(it);
+            }
+        }
+    }
+
+    private void starServicePower() {
+        Intent intent = new Intent(this, PowerService.class);
+        if (!GetAction.checkServiceRunning(PowerService.class, HomeActivity.this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            } else {
+                startService(intent);
+            }
         }
     }
 

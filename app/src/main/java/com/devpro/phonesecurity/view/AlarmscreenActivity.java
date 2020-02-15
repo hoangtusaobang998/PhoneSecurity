@@ -20,6 +20,8 @@ import com.devpro.phonesecurity.service.PlayerServicePower;
 import com.devpro.phonesecurity.service.SensorListen;
 import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 
+import static com.devpro.phonesecurity.receiver.ReceiverPower.wasScreenOn;
+
 public class AlarmscreenActivity extends AppCompatActivity {
     private RelativeLayout background;
     private ImageView start;
@@ -77,6 +79,7 @@ public class AlarmscreenActivity extends AppCompatActivity {
                         Intent intent = new Intent(AlarmscreenActivity.this, PlayerServicePower.class);
                         stopService(intent);
                     }
+                    wasScreenOn = false;
                     finish();
                 } else {
                     Intent intent = new Intent(AlarmscreenActivity.this, PinLockActivity.class);
