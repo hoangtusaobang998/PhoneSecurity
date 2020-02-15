@@ -52,6 +52,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout background;
 
     @Override
+    protected void onStart() {
+        if (!GetAction.checkServiceRunning(SensorListen.class, this)) {
+            startImg.setImageResource(R.drawable.ic_power_off);
+            background.setBackgroundResource(R.drawable.background_home);
+        } else {
+            startImg.setImageResource(R.drawable.ic_power_on);
+            background.setBackgroundResource(R.drawable.background_gradien_on);
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+                startForegroundService(new Intent(this,SensorListen.class));
+        }
+        super.onStart();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -189,6 +203,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             startImg.setImageResource(R.drawable.ic_power_on);
             background.setBackgroundResource(R.drawable.background_gradien_on);
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+                startForegroundService(new Intent(this,SensorListen.class));
         }
     }
 
