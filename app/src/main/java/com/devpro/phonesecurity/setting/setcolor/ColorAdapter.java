@@ -46,7 +46,7 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
                 Intent intent = new Intent(context , HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("color" , color.getColor());
-                HomeActivity.putColor(color.getColor() , context , key);
+               // HomeActivity.putColor(color.getColor() , context , key);
                 context.startActivity(intent);
 
             }
