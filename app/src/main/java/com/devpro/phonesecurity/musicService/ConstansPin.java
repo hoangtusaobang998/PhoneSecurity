@@ -34,11 +34,13 @@ import static android.content.Context.KEYGUARD_SERVICE;
 public class ConstansPin {
     public static final String KEY_PASS = "KEY_PASS";
     public static final String KEY_CODE = "KEY_CODE";
+    public static final String KEY_POWER = "KEY_POWER";
     public static final int KEY_P = 999;
     public static final String KEY_FINGERPRIENT = "KEY_FINGERPRIENT";
     private static final String DATA = "DATA";
     public static final String NULLPOIN = null;
     public static final String NULL_STRING = "";
+
 
     public static String getString(Context context, String key) {
         return createSharedPreferences(context).getString(key, NULLPOIN);
@@ -46,6 +48,14 @@ public class ConstansPin {
 
     public static void putString(Context context, String key, String path) {
         createSharedPreferences(context).edit().putString(key, path).apply();
+    }
+
+    public static boolean getBoolean(Context context, String key) {
+        return createSharedPreferences(context).getBoolean(key, false);
+    }
+
+    public static void putBoolean(Context context, String key, boolean is) {
+        createSharedPreferences(context).edit().putBoolean(key, is).apply();
     }
 
     private static final SharedPreferences createSharedPreferences(Context context) {

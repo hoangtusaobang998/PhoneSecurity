@@ -19,6 +19,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,9 +28,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.devpro.phonesecurity.R;
+import com.devpro.phonesecurity.listen.Play;
 import com.devpro.phonesecurity.musicService.FileUtils;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.receiver.ReceiverBackground;
@@ -42,8 +45,10 @@ import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 import java.net.Inet4Address;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageView startImg,chargeImg;
-    LinearLayout  bellLl,chargeLl , pinLl, settingLl;
+    ImageView startImg, chargeImg, pin;
+    LinearLayout bellLl, chargeLl, pinLl, settingLl;
+    private RelativeLayout background;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +65,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void mapping() {
         startImg = findViewById(R.id.start);
+        background = findViewById(R.id.background);
+        pin = findViewById(R.id.pin);
         bellLl = findViewById(R.id.ll_bell);
         chargeImg = findViewById(R.id.charge);
-        chargeLl=findViewById(R.id.ll_charge);
+        chargeLl = findViewById(R.id.ll_charge);
         pinLl = findViewById(R.id.ll_pin);
         settingLl = findViewById(R.id.ll_setting);
     }
@@ -75,7 +82,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     startImg.setImageResource(R.drawable.ic_power_off);
                     Intent intent = new Intent(HomeActivity.this, SensorListen.class);
                     stopService(intent);
+                    background.setBackgroundResource(R.drawable.background_home);
                 } else {
+                    background.setBackgroundResource(R.drawable.background_gradien_on);
                     startImg.setImageResource(R.drawable.ic_power_on);
                     Intent intent = new Intent(HomeActivity.this, SensorListen.class);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -88,24 +97,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ll_bell:
                 if (GetAction.CheckPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    GetAction.showDialogBell(this,R.layout.dialog_music,R.id.btn_musicdefault,R.id.btn_musiclocal,GetAction.show_Music);
+                    GetAction.showDialogBell(this, R.layout.dialog_music, R.id.btn_musicdefault, R.id.btn_musiclocal, GetAction.show_Music);
 
                 } else
                     GetAction.setPermision(this, Manifest.permission.READ_EXTERNAL_STORAGE, GetAction.requestCode_Permission);
                 break;
             case R.id.ll_charge:
-                if (!ReceiverPower.isRegisted) {
-                    chargeImg.setImageResource(R.drawable.ic_charger_on);
-                   ReceiverPower.sendBroadcast(this);
-                }else {
+
+                if (ConstansPin.getBoolean(this, ConstansPin.KEY_POWER)) {
+                    ConstansPin.putBoolean(this, ConstansPin.KEY_POWER, false);
                     chargeImg.setImageResource(R.drawable.ic_charger_off);
-                    ReceiverPower.stopBroadcast(this);
+                } else {
+                    ConstansPin.putBoolean(this, ConstansPin.KEY_POWER, true);
+                    chargeImg.setImageResource(R.drawable.ic_charger_on);
+                    ReceiverPower.sendBroadcast(this);
                 }
-//                code....
+
 
                 break;
             case R.id.ll_pin:
-                startActivity(new Intent(this, PinLockActivity.class));
+
+                if (ConstansPin.getString(HomeActivity.this, ConstansPin.KEY_PASS) != ConstansPin.NULLPOIN) {
+                    pin.setImageResource(R.drawable.ic_password);
+                    ConstansPin.putString(HomeActivity.this, ConstansPin.KEY_PASS, ConstansPin.NULLPOIN);
+                } else {
+                    startActivity(new Intent(this, PinLockActivity.class));
+                }
+
 //                code...
                 break;
             case R.id.ll_setting:
@@ -126,15 +144,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==GetAction.requestCode_Permission){
-            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                GetAction.showDialogBell(this,R.layout.dialog_music,R.id.btn_musicdefault,R.id.btn_musiclocal,GetAction.show_Music);
-            }
-            else if(grantResults[0]==PackageManager.PERMISSION_DENIED){
+        if (requestCode == GetAction.requestCode_Permission) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                GetAction.showDialogBell(this, R.layout.dialog_music, R.id.btn_musicdefault, R.id.btn_musiclocal, GetAction.show_Music);
+            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     boolean showRationale = shouldShowRequestPermissionRationale(String.valueOf(grantResults[0]));
-                    if(!showRationale){
-                        GetAction.showDialogBell(this,R.layout.dialog_detail,R.id.btn_setting,R.id.btn_done,GetAction.show_Permission);
+                    if (!showRationale) {
+                        GetAction.showDialogBell(this, R.layout.dialog_detail, R.id.btn_setting, R.id.btn_done, GetAction.show_Permission);
                     }
 
                 }
@@ -145,9 +162,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(GetAction.checkServiceRunning(SensorListen.class,this)){
+        if (GetAction.checkServiceRunning(SensorListen.class, this)) {
             GetAction.setVolum(this);
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ConstansPin.getString(HomeActivity.this, ConstansPin.KEY_PASS) != ConstansPin.NULLPOIN) {
+            pin.setImageResource(R.drawable.ic_password_on);
+        } else {
+            pin.setImageResource(R.drawable.ic_password);
+        }
+        if (ConstansPin.getBoolean(this, ConstansPin.KEY_POWER)) {
+            chargeImg.setImageResource(R.drawable.ic_charger_on);
+        }
+    }
+
 }

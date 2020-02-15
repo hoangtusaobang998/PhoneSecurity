@@ -21,6 +21,7 @@ import androidx.core.content.FileProvider;
 
 import com.devpro.phonesecurity.BuildConfig;
 import com.devpro.phonesecurity.R;
+import com.devpro.phonesecurity.listen.Play;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.musicService.ConstansPin;
 import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
@@ -40,6 +41,8 @@ public class SensorListen extends Service implements SensorEventListener {
     private Thread thread;
 
 
+    public static boolean isPlaySensor = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -58,8 +61,8 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Intent it=new Intent(this, PinLockActivity.class);
-        PendingIntent pendingIntent=PendingIntent.getActivity(this,1234,it,0);
+        Intent it = new Intent(this, PinLockActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1234, it, 0);
         uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);
         if (uri_Path == ConstansPin.NULLPOIN) {
             player = MediaPlayer.create(this, R.raw.musicdefault);
@@ -123,14 +126,15 @@ public class SensorListen extends Service implements SensorEventListener {
     public void playMusic() {
         if (player != null) {
             if (!player.isPlaying()) {
+                isPlaySensor = true;
                 player.setAudioStreamType(AudioManager.MODE_IN_COMMUNICATION);
                 player.start();
                 mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
                 mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
                 sensorMan = (SensorManager) getSystemService(SENSOR_SERVICE);
                 accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            }
-            else if(player.isPlaying()){
+            } else if (player.isPlaying()) {
+                isPlaySensor = false;
                 sensorMan.unregisterListener(this);
                 mSensorManager.unregisterListener(this);
             }

@@ -12,32 +12,37 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.devpro.phonesecurity.R;
+import com.devpro.phonesecurity.listen.Play;
+import com.devpro.phonesecurity.musicService.ConstansPin;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.service.PlayerServicePower;
 
 public class ReceiverPower extends BroadcastReceiver {
-     public static Boolean isRegisted = false;
+
+    public static boolean wasScreenOn = false;
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!isRegisted){
-            stopBroadcast(context);
-            return;
-        }
         String action = intent.getAction();
         Intent intentService = new Intent(context, PlayerServicePower.class);
-        if (action.equals(Intent.ACTION_POWER_CONNECTED)) {
+        if (ConstansPin.getBoolean(context, ConstansPin.KEY_POWER)) {
+            if (action.equals(Intent.ACTION_POWER_CONNECTED)) {
 
-            context.stopService(intentService);
 
-        } else if (action.equals(Intent.ACTION_POWER_DISCONNECTED)) {
-            if (!GetAction.checkServiceRunning(PlayerServicePower.class, context)) {
-                if (GetAction.getSDK() >= Build.VERSION_CODES.O) {
-                    context.startForegroundService(intentService);
-                } else {
-                    context.startService(intentService);
+            } else if (action.equals(Intent.ACTION_POWER_DISCONNECTED)) {
+                wasScreenOn = true;
+                if (!GetAction.checkServiceRunning(PlayerServicePower.class, context)) {
+                    if (GetAction.getSDK() >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(intentService);
+                    } else {
+                        context.startService(intentService);
+                    }
                 }
             }
+        } else {
+            wasScreenOn = false;
         }
     }
 
@@ -48,11 +53,7 @@ public class ReceiverPower extends BroadcastReceiver {
         intentFilter.addAction(Intent.ACTION_BOOT_COMPLETED);
         BroadcastReceiver broadcastReceiver = new ReceiverPower();
         context.registerReceiver(broadcastReceiver, intentFilter);
-        ReceiverPower.isRegisted = true;
     }
-    public static final  void stopBroadcast(Context context){
-           ReceiverPower.isRegisted = false;
 
-    }
 
 }
