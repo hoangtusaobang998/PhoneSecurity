@@ -15,7 +15,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -27,6 +26,7 @@ import com.devpro.phonesecurity.listen.Play;
 import com.devpro.phonesecurity.musicService.GetAction;
 import com.devpro.phonesecurity.musicService.ConstansPin;
 import com.devpro.phonesecurity.view.AlarmscreenActivity;
+import com.devpro.phonesecurity.view.HomeActivity;
 import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 
 import java.io.File;
@@ -62,7 +62,6 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         Intent it = new Intent(this, AlarmscreenActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1234, it, 0);
         String uri_Path = ConstansPin.getString(this, GetAction.URI_MP3);
@@ -91,12 +90,22 @@ public class SensorListen extends Service implements SensorEventListener {
                     SensorManager.SENSOR_DELAY_NORMAL);
 
         } else {
+            NotificationManager manager = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                manager = getSystemService(NotificationManager.class);
+                Notification.Builder builder = new Notification.Builder(this);
+                builder.setContentTitle("Stop music")
+                        .setContentText("")
+                        .setSmallIcon(R.drawable.ic_notifications)
+                        .setContentIntent(pendingIntent)
+                        .build();
+                manager.notify(19, builder.build());
+            }
             sensorMan.registerListener(this, accelerometer,
                     SensorManager.SENSOR_DELAY_UI);
             mSensorManager.registerListener(this, mSensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
-
         return START_STICKY;
     }
 
@@ -136,10 +145,13 @@ public class SensorListen extends Service implements SensorEventListener {
                 mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
                 sensorMan = (SensorManager) getSystemService(SENSOR_SERVICE);
                 accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-                Intent it = new Intent(this, AlarmscreenActivity.class);
+                Intent it = new Intent(getApplicationContext(), AlarmscreenActivity.class);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 it.putExtra(AlarmscreenActivity.KEY_RUNNING, GetAction.SERVICE_SENSOR);
+                it.setAction(Intent.ACTION_VIEW);
+                it.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(it);
+
 
             } else if (player.isPlaying()) {
                 isPlaySensor = false;
