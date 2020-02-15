@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.musicService.ConstansPin;
+import com.devpro.phonesecurity.musicService.GetAction;
+import com.devpro.phonesecurity.service.PlayerServicePower;
 import com.devpro.phonesecurity.service.SensorListen;
 import com.devpro.phonesecurity.view.pinlock.PinLockActivity;
 
@@ -67,8 +69,14 @@ public class AlarmscreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isRun = true;
                 if (ConstansPin.getString(AlarmscreenActivity.this, ConstansPin.KEY_PASS) == ConstansPin.NULLPOIN) {
-                    Intent intent = new Intent(AlarmscreenActivity.this, SensorListen.class);
-                    stopService(intent);
+                    if (GetAction.checkServiceRunning(SensorListen.class, AlarmscreenActivity.this)) {
+                        Intent intent = new Intent(AlarmscreenActivity.this, SensorListen.class);
+                        stopService(intent);
+                    }
+                    if (GetAction.checkServiceRunning(PlayerServicePower.class, AlarmscreenActivity.this)) {
+                        Intent intent = new Intent(AlarmscreenActivity.this, PlayerServicePower.class);
+                        stopService(intent);
+                    }
                     finish();
                 } else {
                     Intent intent = new Intent(AlarmscreenActivity.this, PinLockActivity.class);

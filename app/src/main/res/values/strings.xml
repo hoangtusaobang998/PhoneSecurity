@@ -13,4 +13,5 @@
     <string name="nopassconfirm">Password incorrect\'</string>
     <string name="nopasscomfic">Wrong password</string>
     <string name="fingfailed">Fingerprint does not match</string>
+    <string name="retry">Try again with password</string>
 </resources>

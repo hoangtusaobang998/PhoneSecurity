@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridView;
@@ -408,7 +409,8 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
 
     @Override
     public void onFailedMuch() {
-
+        img_fingerprint.setVisibility(View.GONE);
+        txt_passi.setText(getString(R.string.retry));
     }
 
     @Override
