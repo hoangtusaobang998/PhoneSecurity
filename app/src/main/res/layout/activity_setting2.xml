@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".setting.SettingActivity"
+    android:background="@drawable/backgound_style3">
+
+    <RelativeLayout
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_55sdp"
+            android:id="@+id/fingerCard"
+            app:cardCornerRadius="@dimen/_20sdp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/backgound_style3">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fingerTxt"
+                    android:text="Finger Print"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_10sdp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fingerTxt"
+                    android:text="Fingerprint sensor function is off"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_alignLeft="@id/fingerTxt"/>
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fingerSwitch"
+                    android:layout_toRightOf="@id/fingerTxt"
+                    android:layout_marginLeft="@dimen/_120sdp"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_55sdp"
+            android:layout_below="@id/fingerCard"
+            app:cardCornerRadius="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/backgound_style3"
+                android:id="@+id/colorView">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/colorTxt"
+                    android:text="Color"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:textSize="@dimen/_12sdp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/colorTxt"
+                    android:text="Select background color"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_alignLeft="@id/colorTxt"/>
+                <Button
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:id="@+id/colorBtn"
+                    android:background="@drawable/backgound_style3"
+                    android:text="Select"
+                    android:textSize="@dimen/_8sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_20sdp"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
