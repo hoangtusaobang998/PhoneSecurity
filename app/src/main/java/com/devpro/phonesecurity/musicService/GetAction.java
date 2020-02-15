@@ -39,6 +39,7 @@ public class GetAction {
     public static final int show_pin=3;
     public static final String SERVICE_SENSOR = "SERVICE_SENSOR";
     public static final String SERVICE_POWER = "SERVICE_POWER";
+    public static final String SERVICE_RUNNING="SERVICE_RUNNING";
 
 
     public static void setVolum(Context context) {

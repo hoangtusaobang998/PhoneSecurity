@@ -429,6 +429,7 @@ public class PinLockActivity extends AppCompatActivity implements FingerprintLis
         if (GetAction.checkServiceRunning(SensorListen.class, this)) {
             Intent intent = new Intent(PinLockActivity.this, SensorListen.class);
             stopService(intent);
+            ConstansPin.putBoolean(this,GetAction.SERVICE_RUNNING,false);
         }
         if (GetAction.checkServiceRunning(PlayerServicePower.class, this)) {
             Intent intent = new Intent(PinLockActivity.this, PlayerServicePower.class);

@@ -150,7 +150,7 @@ public class SensorListen extends Service implements SensorEventListener {
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 it.putExtra(AlarmscreenActivity.KEY_RUNNING, GetAction.SERVICE_SENSOR);
                 startActivity(it);
-                Log.e("ABC","ABC");
+                ConstansPin.putBoolean(this,GetAction.SERVICE_RUNNING,true);
 
 
             } else if (player.isPlaying()) {
