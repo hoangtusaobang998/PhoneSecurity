@@ -58,7 +58,12 @@ public class AlarmscreenActivity extends AppCompatActivity {
                 if (msg.what % 2 == 0) {
                     background.setBackgroundResource(R.drawable.background_gradien_on);
                 } else {
-                    background.setBackgroundResource(HomeActivity.getColor(AlarmscreenActivity.this,HomeActivity.key));
+                    //background.setBackgroundResource(HomeActivity.getColor(AlarmscreenActivity.this,HomeActivity.key));
+                    if(HomeActivity.getColor(AlarmscreenActivity.this , HomeActivity.key) != -1){
+                        background.setBackgroundResource(HomeActivity.getColor(AlarmscreenActivity.this , HomeActivity.key));
+                    }else {
+                        background.setBackgroundResource(R.drawable.background_home);
+                    }
                 }
                 return false;
             }
