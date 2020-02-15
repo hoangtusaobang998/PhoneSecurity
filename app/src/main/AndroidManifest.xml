@@ -12,7 +12,9 @@
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
         android:required="true" />
+
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
     <uses-feature
         android:name="android.hardware.fingerprint"
         android:required="true" />
@@ -25,14 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.pinlock.PinLockActivity"
-            android:theme="@style/AppThemesss">
-
-        </activity>
-        <activity
-            android:name=".view.splashscreen.SplashActivity"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
+            android:name=".view.AlarmscreenActivity"
             android:theme="@style/AppThemesss">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,19 +36,30 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".view.pinlock.PinLockActivity"
+            android:theme="@style/AppThemesss"></activity>
+        <activity
+            android:name=".view.splashscreen.SplashActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemesss">
+
+        </activity>
+        <activity
             android:name=".view.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemesss" />
 
         <service android:name=".service.SensorListen" />
-        <receiver android:name=".receiver.ReceiverPower" android:exported="true"
-            android:permission="android.intent.action.BOOT_COMPLETED"
-            >
+
+        <receiver
+            android:name=".receiver.ReceiverPower"
+            android:exported="true"
+            android:permission="android.intent.action.BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
@@ -68,7 +74,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>
