@@ -130,7 +130,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     ConstansPin.putBoolean(this, ConstansPin.KEY_POWER, true);
                     chargeImg.setImageResource(R.drawable.ic_charger_on);
-                    ReceiverPower.sendBroadcast(this);
+                    //ReceiverPower.sendBroadcast(this);
                 }
 
 

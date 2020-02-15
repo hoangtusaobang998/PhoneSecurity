@@ -147,10 +147,8 @@ public class SensorListen extends Service implements SensorEventListener {
                 sensorMan = (SensorManager) getSystemService(SENSOR_SERVICE);
                 accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
                 Intent it = new Intent(getApplicationContext(), AlarmscreenActivity.class);
-                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 it.putExtra(AlarmscreenActivity.KEY_RUNNING, GetAction.SERVICE_SENSOR);
-                it.setAction(Intent.ACTION_VIEW);
-                it.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(it);
 
 
