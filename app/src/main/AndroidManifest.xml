@@ -27,22 +27,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".setting.information.InformationActivity"></activity>
         <activity
             android:name=".view.AlarmscreenActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppThemesss">
-
-        </activity>
+            android:theme="@style/AppThemesss"></activity>
         <activity
             android:name=".view.pinlock.PinLockActivity"
-            android:theme="@style/AppThemesss"></activity>
+            android:theme="@style/AppThemesss" />
         <activity
             android:name=".view.splashscreen.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemesss">
-
-        </activity>
+            android:theme="@style/AppThemesss"></activity>
         <activity
             android:name=".view.HomeActivity"
             android:screenOrientation="portrait"
@@ -68,8 +65,7 @@
         </receiver>
 
         <service android:name=".service.PlayerServicePower" />
-        <service
-            android:name=".service.PowerService" />
+        <service android:name=".service.PowerService" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -80,8 +76,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name=".setting.setcolor.SettingColorActivity"/>
-        <activity android:name=".setting.SettingActivity"/>
+
+        <activity
+            android:name=".setting.setcolor.SettingColorActivity"
+            android:theme="@style/AppThemesss" />
+        <activity
+            android:name=".setting.SettingActivity"
+            android:theme="@style/AppThemesss" />
     </application>
 
 </manifest>
