@@ -9,7 +9,7 @@
 
     <ImageView
         android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_120sdp"
+        android:layout_height="@dimen/_150sdp"
         android:src="@drawable/ic_padlock"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_50sdp"
@@ -19,13 +19,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/securityIcon"
         android:text="@string/introduce"
+        android:textColor="#000000"
         android:layout_marginLeft="@dimen/_25sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_50sdp"
         android:id="@+id/intro"
-        android:textSize="@dimen/_12sdp"/>
+        android:textSize="@dimen/_15sdp"/>
     <ImageView
-        android:layout_width="@dimen/_15sdp"
-        android:layout_height="@dimen/_15sdp"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
         android:src="@drawable/ic_question"
         android:layout_below="@id/intro"
         android:id="@+id/questionicon"
@@ -34,9 +35,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/information"
+        android:textColor="#000000"
         android:layout_below="@id/intro"
         android:layout_toRightOf="@id/questionicon"
-        android:textSize="@dimen/_12sdp"
+        android:textSize="@dimen/_15sdp"
         android:layout_alignLeft="@id/intro"/>
 
 </RelativeLayout>
