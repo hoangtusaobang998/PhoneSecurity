@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.devpro.phonesecurity.R;
 import com.devpro.phonesecurity.musicService.ConstansPin;
+import com.devpro.phonesecurity.setting.information.InformationActivity;
 import com.devpro.phonesecurity.setting.setcolor.SettingColorActivity;
 
 import static com.devpro.phonesecurity.musicService.ConstansPin.KEY_FINGERPRIENT;
@@ -45,6 +46,8 @@ public class SettingActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this , InformationActivity.class);
+                startActivity(intent);
             }
         });
         if (ConstansPin.getString(this, KEY_FINGERPRIENT) != null) {

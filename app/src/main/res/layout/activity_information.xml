@@ -4,6 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".setting.information.InformationActivity">
+    tools:context=".setting.information.InformationActivity"
+    android:background="@drawable/background_style2">
+
+    <ImageView
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:src="@drawable/ic_padlock"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:id="@+id/securityIcon" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/securityIcon"
+        android:text="@string/introduce"
+        android:layout_marginLeft="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:id="@+id/intro"
+        android:textSize="@dimen/_12sdp"/>
+    <ImageView
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:src="@drawable/ic_question"
+        android:layout_below="@id/intro"
+        android:id="@+id/questionicon"
+        android:layout_marginLeft="@dimen/_3sdp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/information"
+        android:layout_below="@id/intro"
+        android:layout_toRightOf="@id/questionicon"
+        android:textSize="@dimen/_12sdp"
+        android:layout_alignLeft="@id/intro"/>
 
 </RelativeLayout>

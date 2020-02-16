@@ -14,4 +14,6 @@
     <string name="nopasscomfic">Wrong password</string>
     <string name="fingfailed">Fingerprint does not match</string>
     <string name="retry">Try again with password</string>
+    <string name="introduce">An application about phone security !</string>
+    <string name="information">You want to protect your phone in every public places or being in a good sleep , this app will help you a lot.It warns you when thiefs are coming and just your PIN code or fingerprint can help you to stop it. Let\'s appreciate what it brings for you !!!</string>
 </resources>
