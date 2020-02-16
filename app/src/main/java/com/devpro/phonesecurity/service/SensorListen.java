@@ -41,7 +41,7 @@ public class SensorListen extends Service implements SensorEventListener {
     private static final int SENSOR_SENSITIVITY = 4;
     int pSwitchSet = 0;
     private MediaPlayer player;
-
+    private NotificationManager manage;
 
     public static boolean isPlaySensor = false;
 
@@ -72,10 +72,13 @@ public class SensorListen extends Service implements SensorEventListener {
             Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", new File(uri_Path));
             player = MediaPlayer.create(this, uri);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            manage = getSystemService(NotificationManager.class);
+        }
         final String CHANNEL_ID = "sersorListen_id";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel test = new NotificationChannel(CHANNEL_ID, "sersorListen_id", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manage = getSystemService(NotificationManager.class);
+
             assert manage != null;
             manage.createNotificationChannel(test);
             Notification.Builder notify = new Notification.Builder(this, CHANNEL_ID);
@@ -91,16 +94,17 @@ public class SensorListen extends Service implements SensorEventListener {
                     SensorManager.SENSOR_DELAY_NORMAL);
 
         } else {
-            NotificationManager manager = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                manager = getSystemService(NotificationManager.class);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
                 Notification.Builder builder = new Notification.Builder(this);
                 builder.setContentTitle("Stop music")
                         .setContentText("")
                         .setSmallIcon(R.drawable.ic_notifications)
                         .setContentIntent(pendingIntent)
                         .build();
-                manager.notify(19, builder.build());
+                manage.notify(1, builder.build());
+
             }
             sensorMan.registerListener(this, accelerometer,
                     SensorManager.SENSOR_DELAY_UI);
@@ -150,7 +154,7 @@ public class SensorListen extends Service implements SensorEventListener {
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 it.putExtra(AlarmscreenActivity.KEY_RUNNING, GetAction.SERVICE_SENSOR);
                 startActivity(it);
-                ConstansPin.putBoolean(this,GetAction.SERVICE_RUNNING,true);
+                ConstansPin.putBoolean(this, GetAction.SERVICE_RUNNING, true);
 
 
             } else if (player.isPlaying()) {
@@ -163,6 +167,7 @@ public class SensorListen extends Service implements SensorEventListener {
 
     @Override
     public void onDestroy() {
+        manage.cancel(1);
         sensorMan.unregisterListener(this);
         mSensorManager.unregisterListener(this);
         if (player != null)
